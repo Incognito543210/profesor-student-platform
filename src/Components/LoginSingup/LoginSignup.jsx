@@ -3,6 +3,7 @@ import "./LoginSignup.css";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
 import user_icon from "../Assets/person.png";
+import { Navigate } from "react-router-dom";
 
 const LoginSignup = () => {
   const [action, setAction] = useState("Login");
@@ -15,6 +16,12 @@ const LoginSignup = () => {
     userFirstName: "",
     userLastName: "",
   });
+
+  const [goToHome, setGoToHome] = React.useState(false);
+
+  if (goToHome) {
+    return <Navigate to="/home" />;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +73,7 @@ const LoginSignup = () => {
         // Login successful, you can handle the token or redirect
         const token = await response.text();
         localStorage.setItem("token", token);
+        setGoToHome(true);
       } else {
         const errorMessage = await response.text();
         console.error("Login failed:", errorMessage);
