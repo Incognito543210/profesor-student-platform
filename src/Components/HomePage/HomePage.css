@@ -1,0 +1,37 @@
+/* styles.css */
+
+/* Style dla całej strony */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Styl dla nagłówka */
+  h1 {
+    color: #333;
+  }
+  
+  /* Styl dla listy repozytoriów */
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Styl dla pojedynczego repozytorium */
+  li {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  /* Styl dla tytułu repozytorium */
+  h2 {
+    color: #007bff;
+  }
+  
+  /* Styl dla opisu repozytorium */
+  p {
+    color: #555;
+  }
+  
