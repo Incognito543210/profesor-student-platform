@@ -48,6 +48,7 @@ const LoginSignup = () => {
       if (response.ok) {
         // Registration successful, you can redirect or show a success message
         console.log("Registration successful");
+        setAction("Login");
       } else {
         const errorMessage = await response.text();
         console.error("Registration failed:", errorMessage);
@@ -148,16 +149,22 @@ const LoginSignup = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="input">
-          <img src={password_icon} alt="" />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
+
+        {action === "Login" ? null : (
+          <>
+            <div className="input">
+              <img src={password_icon} alt="" />
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
+
         {action === "Login" ? null : (
           <div className="role-selection">
             <div>
