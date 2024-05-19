@@ -3,11 +3,14 @@ import "./LoginSignup.css";
 import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
 import user_icon from "../Assets/person.png";
+import eye_icon from "../Assets/eye_icon.png";
 import { Navigate } from "react-router-dom";
+import { validateForm } from "./validation";
 
 const LoginSignup = () => {
   const [action, setAction] = useState("Login");
   const [role, setRole] = useState("");
+  const [apiError, setApiError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,6 +20,10 @@ const LoginSignup = () => {
     userLastName: "",
   });
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
+  const [errors, setErrors] = useState({});
   const [goToHome, setGoToHome] = React.useState(false);
 
   if (goToHome) {
@@ -29,6 +36,11 @@ const LoginSignup = () => {
   };
 
   const handleSignUp = async () => {
+    const formErrors = validateForm(formData, action, role);
+    if (Object.keys(formErrors).length !== 0) {
+      setErrors(formErrors);
+      return;
+    }
     try {
       if (role == "teacher") {
         formData.roleId = 2;
@@ -51,6 +63,7 @@ const LoginSignup = () => {
         setAction("Login");
       } else {
         const errorMessage = await response.text();
+        setApiError(errorMessage);
         console.error("Registration failed:", errorMessage);
       }
     } catch (error) {
@@ -59,6 +72,11 @@ const LoginSignup = () => {
   };
 
   const handleLogin = async () => {
+    const formErrors = validateForm(formData, action, role);
+    if (Object.keys(formErrors).length !== 0) {
+      setErrors(formErrors);
+      return;
+    }
     try {
       const response = await fetch(`https://localhost:7164/API/Account/login`, {
         method: "POST",
@@ -78,10 +96,19 @@ const LoginSignup = () => {
       } else {
         const errorMessage = await response.text();
         console.error("Login failed:", errorMessage);
+        setApiError(errorMessage);
       }
     } catch (error) {
       console.error("Error during login:", error);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
   };
 
   return (
@@ -116,6 +143,9 @@ const LoginSignup = () => {
                 value={formData.userFirstName}
                 onChange={handleChange}
               />
+              {errors.userFirstName && (
+                <span className="error">{errors.userFirstName}</span>
+              )}
             </div>
             <div className="input">
               <img src={user_icon} alt="" />
@@ -126,6 +156,9 @@ const LoginSignup = () => {
                 value={formData.userLastName}
                 onChange={handleChange}
               />
+              {errors.userLastName && (
+                <span className="error">{errors.userLastName}</span>
+              )}
             </div>
           </>
         )}
@@ -138,16 +171,25 @@ const LoginSignup = () => {
             value={formData.email}
             onChange={handleChange}
           />
+          {errors.email && <span className="error">{errors.email}</span>}
         </div>
         <div className="input">
           <img src={password_icon} alt="" />
           <input
-            type="password"
+            type={passwordVisible ? "text" : "password"}
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
           />
+          <img
+            src={eye_icon}
+            alt="Toggle Password Visibility"
+            onClick={togglePasswordVisibility}
+            className="toggle-visibility"
+          />
+
+          {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
         {action === "Login" ? null : (
@@ -155,12 +197,21 @@ const LoginSignup = () => {
             <div className="input">
               <img src={password_icon} alt="" />
               <input
-                type="password"
+                type={confirmPasswordVisible ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
+              <img
+                src={eye_icon}
+                alt="Toggle Confirm Password Visibility"
+                onClick={toggleConfirmPasswordVisibility}
+                className="toggle-visibility"
+              />
+              {errors.confirmPassword && (
+                <span className="error">{errors.confirmPassword}</span>
+              )}
             </div>
           </>
         )}
@@ -189,9 +240,11 @@ const LoginSignup = () => {
               />
               <label htmlFor="student">Student</label>
             </div>
+            {errors.role && <span className="error">{errors.role}</span>}
           </div>
         )}
       </div>
+      {apiError && <div className="api-error">{apiError}</div>}
       <div className="submit-container">
         {action === "Login" ? (
           <button onClick={handleLogin} className="submit">

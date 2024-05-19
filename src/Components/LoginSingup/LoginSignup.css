@@ -147,3 +147,31 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+  display: block;
+}
+
+.api-error {
+  color: red;
+  font-size: 1em;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.toggle-visibility {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input {
+  position: relative;
+}
