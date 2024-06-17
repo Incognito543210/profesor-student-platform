@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const authContext = createContext({
   token: "",
+  role: "",
   logOut: () => [],
 });
 
@@ -11,6 +12,7 @@ export const useAuth = () => {
 
 export const AuthContextProvider = ({ children }) => {
   const [token, setToken] = useState("");
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +27,17 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const getRole = () => {
+      const storedRole = localStorage.getItem("role");
+      if (storedRole) {
+        setRole(storedRole);
+      }
+      setLoading(false);
+    };
+    getRole();
+  }, []);
+
+  useEffect(() => {
     console.log("Login successful, token:", token);
   }, [token]);
 
@@ -35,6 +48,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const values = {
     token,
+    role,
     logOut,
   };
 

@@ -24,8 +24,24 @@ function HomePage() {
       .catch((error) => console.error("Error fetching data:", error));
   }, [token]);
 
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
+  const goToMyAccountPage = () => {
+    navigate("/myAccountPage");
+  };
+
   return (
     <div>
+      <div className="repository-page">
+        <div className="header-buttons">
+          <button onClick={goToMyAccountPage}>Moje Konto</button>
+          <button onClick={handleLogout}>Wylogowanie</button>
+        </div>{" "}
+      </div>
       <h1>Lista repozytoriów</h1>
       <ul>
         {repositories.map((repo) => (
