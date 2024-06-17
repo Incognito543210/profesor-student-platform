@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 function HomePage() {
   const navigate = useNavigate();
   const [repositories, setRepositories] = useState([]);
+  const [userData, setUserData] = useState(null);
   const token = localStorage.getItem("token");
-
   useEffect(() => {
     if (!token) {
       console.error("Token not found in local storage");
@@ -24,6 +24,22 @@ function HomePage() {
       .catch((error) => console.error("Error fetching data:", error));
   }, [token]);
 
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    fetch("https://localhost:7164/API/Account/getUser", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setUserData(data))
+      .catch((error) => console.error("Error fetching assignments:", error));
+    console.log(userData);
+  }, [token]);
+
   const handleLogout = () => {
     localStorage.setItem("token", "");
     localStorage.removeItem("token");
@@ -33,6 +49,15 @@ function HomePage() {
   const goToMyAccountPage = () => {
     navigate("/myAccountPage");
   };
+
+  useEffect(() => {
+    if (userData) {
+      const role = userData.roleID?.toString();
+      if (role) {
+        localStorage.setItem("role", role);
+      }
+    }
+  }, [userData]);
 
   return (
     <div>

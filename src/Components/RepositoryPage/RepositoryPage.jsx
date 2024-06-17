@@ -9,6 +9,7 @@ function RepositoryPage() {
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
   console.log(location);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ function RepositoryPage() {
         <div>
           <h1>{repository.name}</h1>
           <h2>{repository.topic}</h2>
+          <h1>{role}</h1>
           <h3>Assignments:</h3>
           <ul>
             {assignments.map((assignment) => (
