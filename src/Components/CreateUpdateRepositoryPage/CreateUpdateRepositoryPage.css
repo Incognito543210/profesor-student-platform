@@ -1,0 +1,30 @@
+.create-update-repository {
+  margin: 20px;
+}
+
+.create-update-repository form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-update-repository label {
+  margin-bottom: 10px;
+}
+
+.create-update-repository input {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.create-update-repository button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.create-update-repository button:hover {
+  background-color: #0056b3;
+}
