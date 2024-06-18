@@ -63,7 +63,7 @@ function HomePage() {
   };
 
   const handleCreateRepository = () => {
-    navigate("/createRepository");
+    navigate("/createUpdateRepositoryPage");
   };
 
   const checkAndNavigate = (repoId) => {
@@ -123,7 +123,7 @@ function HomePage() {
         <div className="header-buttons">
           <button onClick={goToMyAccountPage}>Moje Konto</button>
           <button onClick={handleLogout}>Wylogowanie</button>
-          {(role === "nauczyciel" || role === "admin") && (
+          {(role === "1" || role === "2") && (
             <button onClick={handleCreateRepository}>
               Utwórz repozytorium
             </button>
