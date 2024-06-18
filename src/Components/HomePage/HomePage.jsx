@@ -1,13 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useAuth } from "../../Context/AuthContext";
-import "./HomePage.css";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./HomePage.css";
 
 function HomePage() {
   const navigate = useNavigate();
   const [repositories, setRepositories] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [selectedRepo, setSelectedRepo] = useState(null);
+  const [isUserEnrolled, setIsUserEnrolled] = useState(false);
+  const [isUserAccepted, setIsUserAccepted] = useState(false);
+  const [checkingEnrollment, setCheckingEnrollment] = useState(false);
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     if (!token) {
       console.error("Token not found in local storage");
@@ -37,8 +41,16 @@ function HomePage() {
       .then((response) => response.json())
       .then((data) => setUserData(data))
       .catch((error) => console.error("Error fetching assignments:", error));
-    console.log(userData);
   }, [token]);
+
+  useEffect(() => {
+    if (userData) {
+      const role = userData.roleID?.toString();
+      if (role) {
+        localStorage.setItem("role", role);
+      }
+    }
+  }, [userData]);
 
   const handleLogout = () => {
     localStorage.setItem("token", "");
@@ -50,14 +62,60 @@ function HomePage() {
     navigate("/myAccountPage");
   };
 
-  useEffect(() => {
-    if (userData) {
-      const role = userData.roleID?.toString();
-      if (role) {
-        localStorage.setItem("role", role);
-      }
-    }
-  }, [userData]);
+  const handleCreateRepository = () => {
+    navigate("/createRepository");
+  };
+
+  const checkAndNavigate = (repoId) => {
+    setCheckingEnrollment(true);
+    fetch("https://localhost:7164/API/Repository/UserExistInRepo/" + repoId, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setIsUserEnrolled(data.userID !== 0);
+        setIsUserAccepted(data.isMember);
+        setSelectedRepo(repoId);
+        setCheckingEnrollment(false);
+
+        if (data.isMember) {
+          navigate("/repositoryPage", { state: { id: repoId } });
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking enrollment:", error);
+        setCheckingEnrollment(false);
+      });
+  };
+
+  const enrollUser = (repoId) => {
+    const enrollmentData = {
+      enterDate: new Date().toISOString(),
+      hasPrivilage: false,
+      isMember: false,
+      userID: 0,
+      repositoryID: repoId,
+    };
+
+    fetch("https://localhost:7164/API/Repository/addStudentToRepository", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(enrollmentData),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        alert("Zostałeś zapisany. Czekaj na akceptację.");
+        setSelectedRepo(null);
+      })
+      .catch((error) => console.error("Error enrolling user:", error));
+  };
+
+  const role = localStorage.getItem("role");
 
   return (
     <div>
@@ -65,21 +123,38 @@ function HomePage() {
         <div className="header-buttons">
           <button onClick={goToMyAccountPage}>Moje Konto</button>
           <button onClick={handleLogout}>Wylogowanie</button>
-        </div>{" "}
+          {(role === "nauczyciel" || role === "admin") && (
+            <button onClick={handleCreateRepository}>
+              Utwórz repozytorium
+            </button>
+          )}
+        </div>
       </div>
       <h1>Lista repozytoriów</h1>
       <ul>
         {repositories.map((repo) => (
-          <li
-            key={repo.id}
-            onClick={() =>
-              navigate("/repositoryPage", { state: { id: repo.repositoryID } })
-            }
-          >
+          <li key={repo.id} onClick={() => checkAndNavigate(repo.repositoryID)}>
             <h2>{repo.name}</h2>
           </li>
         ))}
       </ul>
+
+      {checkingEnrollment && <p>Sprawdzanie zapisów...</p>}
+
+      {selectedRepo && !checkingEnrollment && (
+        <div className="enrollment-modal">
+          {isUserEnrolled ? (
+            <p>Jesteś już zapisany. Czekaj na akceptację.</p>
+          ) : (
+            <div>
+              <p>Nie jesteś zapisany do tego repozytorium.</p>
+              <button onClick={() => enrollUser(selectedRepo)}>
+                Zapisz mnie
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
