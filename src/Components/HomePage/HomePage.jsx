@@ -116,6 +116,18 @@ function HomePage() {
   };
 
   const role = localStorage.getItem("role");
+  useEffect(() => {
+    if (userData) {
+      const role = userData.roleID?.toString();
+      if (role) {
+        localStorage.setItem("role", role);
+      }
+      const user = userData.userID?.toString();
+      if (user){
+        localStorage.setItem("user", user);
+      }
+    }
+  }, [userData]);
 
   return (
     <div>
