@@ -56,6 +56,10 @@ function HomePage() {
       if (role) {
         localStorage.setItem("role", role);
       }
+      const user = userData.userID?.toString();
+      if (user){
+        localStorage.setItem("user", user);
+      }
     }
   }, [userData]);
 
