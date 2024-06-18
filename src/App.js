@@ -7,6 +7,7 @@ import RepositoryPage from "./Components/RepositoryPage/RepositoryPage";
 import AssignmentPage from "./Components/AssignmentPage/AssignmentPage";
 import MyAccountPage from "./Components/MyAccountPage/MyAccountPage";
 import CreateUpdateRepositoryPage from "./Components/CreateUpdateRepositoryPage/CreateUpdateRepositoryPage";
+import AcceptStudentsPage from "./Components/AcceptStudentsPage/AcceptStudentsPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             path="/CreateUpdateRepositoryPage"
             element={<CreateUpdateRepositoryPage />}
           />
+          <Route path="/acceptStudentsPage" element={<AcceptStudentsPage />} />
         </Routes>
       </Router>
     </div>

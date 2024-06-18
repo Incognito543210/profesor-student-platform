@@ -62,11 +62,16 @@ function RepositoryPage() {
     navigate("/myAccountPage");
   };
 
+  const goToAcceptStudentsPage = () => {
+    navigate("/acceptStudentsPage", { state: { id: location.state.id } });
+  };
+
   return (
     <div className="repository-page">
       <div className="header-buttons">
         <button onClick={goToMyAccountPage}>Moje Konto</button>
         <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={goToAcceptStudentsPage}>Akceptowanie Studentów</button>
       </div>
       {repository ? (
         <div>

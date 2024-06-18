@@ -1,0 +1,103 @@
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import "./AcceptStudentsPage.css";
+import { useNavigate } from "react-router-dom";
+
+function AcceptStudentsPage() {
+  const [studentList, setStudentList] = useState([]);
+  const token = localStorage.getItem("token");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const role = localStorage.getItem("role");
+  console.log(location);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    fetch(
+      "https://localhost:7164/API/Repository/accountToConfirm/" +
+        location.state.id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setStudentList(data))
+      .catch((error) => console.error("Error fetching students:", error));
+  }, [token, location.state.id]);
+
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
+  const goToMyAccountPage = () => {
+    navigate("/myAccountPage");
+  };
+
+  const goToHome = () => {
+    navigate("/home");
+  };
+
+  const acceptStudent = (userID) => {
+    fetch(
+      "https://localhost:7164/API/Repository/confirmStudent/" +
+        userID +
+        "/" +
+        location.state.id,
+      {
+        method: "POST", // or PUT, depending on the API
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          console.log("Student accepted successfully!");
+          // Optionally, refresh the student list or update the UI to reflect the change
+          setStudentList(
+            studentList.filter((student) => student.userID !== userID)
+          );
+        } else {
+          console.error("Failed to accept student.");
+        }
+      })
+      .catch((error) => console.error("Error accepting student:", error));
+  };
+
+  return (
+    <div className="repository-page">
+      <div className="header-buttons">
+        <button onClick={goToMyAccountPage}>Moje Konto</button>
+        <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={goToHome}>Repozytoria</button>
+      </div>
+      <div className="student-list">
+        {studentList.length > 0 ? (
+          studentList.map((student) => (
+            <div key={student.userID} className="student-item">
+              <span>
+                Enter Date: {new Date(student.enterDate).toLocaleString()}
+              </span>
+              <span>User ID: {student.userID}</span>
+              <button onClick={() => acceptStudent(student.userID)}>
+                Accept
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No students to display.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default AcceptStudentsPage;
