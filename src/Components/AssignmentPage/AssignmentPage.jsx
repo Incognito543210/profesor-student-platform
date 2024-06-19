@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./AssignmentPage.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 function AssignmentPage() {
   const [assignment, setAssignment] = useState(null);
+  const [files, setFiles] = useState([]);
   const token = localStorage.getItem("token");
   const userID = localStorage.getItem("user");
+  const roleID = localStorage.getItem("role");
   const location = useLocation();
   const assignmentID = location.state.id
   console.log(location);
@@ -34,6 +35,44 @@ function AssignmentPage() {
     console.log(assignment);
   }, [token, location.state.id]);
 
+  useEffect(() =>{
+    if (!token) {
+      console.error("Token not found in local storage");
+      return;
+    }
+
+    if(roleID == '3')
+      {
+    fetch(
+      "https://localhost:7164/API/File/FilesNames/" +
+        assignmentID + "/" + userID,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setFiles(data))
+      .catch((error) => console.error("Error fetching data:", error));
+    console.log(files);
+  }else
+  {
+    fetch(
+      "https://localhost:7164/API/File/FilesNames/" + assignmentID,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setFiles(data))
+      .catch((error) => console.error("Error fetching data:", error));
+    console.log(files);
+  }
+  }, [token, assignmentID, userID]);
+
   const handleLogout = () => {
     localStorage.setItem("token", "");
     localStorage.removeItem("token");
@@ -49,8 +88,6 @@ function AssignmentPage() {
     const formData = new FormData();
     formData.append('UserID', userID);
     formData.append('AssigmentID', assignmentID);
-    // formData.append("files", fileList[0]);
-    // formData.append("files", fileList[1]);
     for(let i = 0; i < fileList.length; i++){
       formData.append("files", fileList[i]);
     }
@@ -62,26 +99,13 @@ function AssignmentPage() {
       },
       method: "POST",
       body: formData
-    });
+    }
+  );
     }catch (error) {
       console.error("Error during file upload:", error);
     }
+    window.location.reload();
   };
-
-  async function uploadFile(e){
-    const formData = new FormData(e.target)
-    const response = await fetch('https://localhost:7164/API/File/upload/', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      method: "POST",
-      body: formData
-    });
-
-    const data = await response.json();
-
-    console.log(data)
-  }
 
   return (
     <div className="repository-page">
@@ -97,14 +121,15 @@ function AssignmentPage() {
           <input type="file" id="pliczki" multiple />
           <br /><br />
           <button onClick={handleUpload}>Upload</button>
-          {/* <form id="uploadF" enctype="multipart/form-data" onSubmit={upFile}>
-            <label htmlFor="files">Wybierz plik(i)</label>
-            <br /><br />
-            <input type="file" id="files" multiple required name="files" />
 
-            <br /><br />
-            <input type="submit" value="Upload" className="btn"/>
-          </form> */}
+          <ul>
+            {files.map((file) =>(
+              <li>
+                <p>Name: {file.fileName}</p>
+              </li>
+            ))
+            }
+          </ul>
 
         </div>
       ) : (
