@@ -13,6 +13,7 @@ function AssignmentPage() {
   const assignmentID = location.state.id
   console.log(location);
   const navigate = useNavigate();
+  const dBtn = document.getElementById("downloadBtn");
 
   useEffect(() => {
     if (!token) {
@@ -44,7 +45,7 @@ function AssignmentPage() {
     if(roleID == '3')
       {
     fetch(
-      "https://localhost:7164/API/File/FilesNames/" +
+      'https://localhost:7164/API/File/FilesNames/' +
         assignmentID + "/" + userID,
       {
         headers: {
@@ -59,7 +60,7 @@ function AssignmentPage() {
   }else
   {
     fetch(
-      "https://localhost:7164/API/File/FilesNames/" + assignmentID,
+      'https://localhost:7164/API/File/FilesNames/' + assignmentID,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -107,6 +108,26 @@ function AssignmentPage() {
     window.location.reload();
   };
 
+  function handleDownload (fileName) {
+    fetch("https://localhost:7164/API/File/DownloadFile/" + assignmentID +'/'+ userID +'/'+ fileName, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((res) =>  {
+      if(!res.ok){
+        console.error("Something went wrong with the file downloading. Check backend")
+      }
+      return res.blob();
+    })
+    .then((file)=>{
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(file);
+      link.download = fileName;
+      link.click()
+    })
+  }
+
   return (
     <div className="repository-page">
       <div className="header-buttons">
@@ -121,11 +142,11 @@ function AssignmentPage() {
           <input type="file" id="pliczki" multiple />
           <br /><br />
           <button onClick={handleUpload}>Upload</button>
-
+          <p>Lista plików:</p>
           <ul>
             {files.map((file) =>(
-              <li>
-                <p>Name: {file.fileName}</p>
+              <li key={file.fileName} onClick={()=>handleDownload(file.fileName)}>
+                <a>{file.fileName}</a>
               </li>
             ))
             }
