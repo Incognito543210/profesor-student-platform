@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function RepositoryPage() {
   const [repository, setRepository] = useState(null);
   const [assignments, setAssignments] = useState([]);
+  const userID = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const location = useLocation();
   const navigate = useNavigate();
@@ -55,6 +56,10 @@ function RepositoryPage() {
   const handleLogout = () => {
     localStorage.setItem("token", "");
     localStorage.removeItem("token");
+    localStorage.setItem("role", "");
+    localStorage.removeItem("role");
+    localStorage.setItem("user", "");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -66,12 +71,28 @@ function RepositoryPage() {
     navigate("/acceptStudentsPage", { state: { id: location.state.id } });
   };
 
+  const goToUpdateRepositoryPage = () => {
+    navigate("/createUpdateRepositoryPage", { state: { repository } });
+  };
+
+  const canUpdateRepository =
+    repository &&
+    repository.createdById &&
+    repository.createdById.toString() === userID;
+
   return (
     <div className="repository-page">
       <div className="header-buttons">
         <button onClick={goToMyAccountPage}>Moje Konto</button>
         <button onClick={handleLogout}>Wylogowanie</button>
-        <button onClick={goToAcceptStudentsPage}>Akceptowanie Studentów</button>
+        {canUpdateRepository && (
+          <button onClick={goToAcceptStudentsPage}>
+            Akceptowanie Studentów
+          </button>
+        )}
+        {canUpdateRepository && (
+          <button onClick={goToUpdateRepositoryPage}>Update Repository</button>
+        )}
       </div>
       {repository ? (
         <div>
