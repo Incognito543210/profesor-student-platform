@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./AcceptStudentsPage.css";
 import { useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 
 function AcceptStudentsPage() {
   const [studentList, setStudentList] = useState([]);
   const [acceptedStudentList, setAcceptedStudentList] = useState([]);
   const token = localStorage.getItem("token");
   const location = useLocation();
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
-  console.log(location);
+  const [modalIsOpen, setModalIsOpen] = useState(false); // State for modal
 
   useEffect(() => {
     if (!token) {
@@ -51,6 +53,10 @@ function AcceptStudentsPage() {
   const handleLogout = () => {
     localStorage.setItem("token", "");
     localStorage.removeItem("token");
+    localStorage.setItem("role", "");
+    localStorage.removeItem("role");
+    localStorage.setItem("user", "");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -85,12 +91,26 @@ function AcceptStudentsPage() {
           );
         } else {
           console.error("Failed to accept student.");
+          setErrorMessage("Failed to accept student.");
+          setModalIsOpen(true); // Open modal on error
         }
       })
-      .catch((error) => console.error("Error accepting student:", error));
+      .catch((error) => {
+        console.error("Error accepting student:", error);
+        setErrorMessage("Error accepting student.");
+        setModalIsOpen(true); // Open modal on error
+      });
   };
 
   const removeStudent = (userID) => {
+    const currentUserID = localStorage.getItem("user");
+
+    if (currentUserID && userID.toString() === currentUserID) {
+      setErrorMessage("Nie możesz usunąć siebie z listy studentów.");
+      setModalIsOpen(true); // Open modal on error
+      return;
+    }
+
     fetch(
       "https://localhost:7164/API/Repository/removeStudentFromRepository/" +
         location.state.id +
@@ -113,9 +133,15 @@ function AcceptStudentsPage() {
           );
         } else {
           console.error("Failed to remove student.");
+          setErrorMessage("Failed to remove student.");
+          setModalIsOpen(true); // Open modal on error
         }
       })
-      .catch((error) => console.error("Error removing student:", error));
+      .catch((error) => {
+        console.error("Error removing student:", error);
+        setErrorMessage("Error removing student.");
+        setModalIsOpen(true); // Open modal on error
+      });
   };
 
   return (
@@ -131,10 +157,9 @@ function AcceptStudentsPage() {
           {studentList.length > 0 ? (
             studentList.map((student) => (
               <div key={student.userID} className="student-item">
-                <span>
-                  Enter Date: {new Date(student.enterDate).toLocaleString()}
-                </span>
-                <span>User ID: {student.userID}</span>
+                <span>{student.userFirstName}</span>
+                <span>{student.userLastName}</span>
+                <span>{student.email}</span>
                 <button onClick={() => acceptStudent(student.userID)}>
                   Accept
                 </button>
@@ -149,10 +174,9 @@ function AcceptStudentsPage() {
           {acceptedStudentList.length > 0 ? (
             acceptedStudentList.map((student) => (
               <div key={student.userID} className="student-item">
-                <span>
-                  Enter Date: {new Date(student.enterDate).toLocaleString()}
-                </span>
-                <span>User ID: {student.userID}</span>
+                <span>{student.userFirstName}</span>
+                <span>{student.userLastName}</span>
+                <span>{student.email}</span>
                 <button onClick={() => removeStudent(student.userID)}>
                   Remove
                 </button>
@@ -163,6 +187,17 @@ function AcceptStudentsPage() {
           )}
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Error Modal"
+        className="modal"
+        overlayClassName="overlay"
+      >
+        <h2>Error</h2>
+        <p>{errorMessage}</p>
+        <button onClick={() => setModalIsOpen(false)}>Close</button>
+      </Modal>
     </div>
   );
 }

@@ -10,6 +10,8 @@ function HomePage() {
   const [isUserEnrolled, setIsUserEnrolled] = useState(false);
   const [isUserAccepted, setIsUserAccepted] = useState(false);
   const [checkingEnrollment, setCheckingEnrollment] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [enrollmentModalOpen, setEnrollmentModalOpen] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -55,6 +57,10 @@ function HomePage() {
   const handleLogout = () => {
     localStorage.setItem("token", "");
     localStorage.removeItem("token");
+    localStorage.setItem("role", "");
+    localStorage.removeItem("role");
+    localStorage.setItem("user", "");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -79,6 +85,7 @@ function HomePage() {
         setIsUserAccepted(data.isMember);
         setSelectedRepo(repoId);
         setCheckingEnrollment(false);
+        setEnrollmentModalOpen(true);
 
         if (data.isMember) {
           navigate("/repositoryPage", { state: { id: repoId } });
@@ -111,6 +118,7 @@ function HomePage() {
       .then(() => {
         alert("Zostałeś zapisany. Czekaj na akceptację.");
         setSelectedRepo(null);
+        setEnrollmentModalOpen(false);
       })
       .catch((error) => console.error("Error enrolling user:", error));
   };
@@ -123,11 +131,15 @@ function HomePage() {
         localStorage.setItem("role", role);
       }
       const user = userData.userID?.toString();
-      if (user){
+      if (user) {
         localStorage.setItem("user", user);
       }
     }
   }, [userData]);
+
+  const filteredRepositories = repositories.filter((repo) =>
+    repo.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div>
@@ -135,7 +147,7 @@ function HomePage() {
         <div className="header-buttons">
           <button onClick={goToMyAccountPage}>Moje Konto</button>
           <button onClick={handleLogout}>Wylogowanie</button>
-          {(role === "1" || role === "2") && (
+          {role === "2" && (
             <button onClick={handleCreateRepository}>
               Utwórz repozytorium
             </button>
@@ -143,8 +155,14 @@ function HomePage() {
         </div>
       </div>
       <h1>Lista repozytoriów</h1>
+      <input
+        type="text"
+        placeholder="Wyszukaj repozytorium..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <ul>
-        {repositories.map((repo) => (
+        {filteredRepositories.map((repo) => (
           <li key={repo.id} onClick={() => checkAndNavigate(repo.repositoryID)}>
             <h2>{repo.name}</h2>
           </li>
@@ -153,7 +171,7 @@ function HomePage() {
 
       {checkingEnrollment && <p>Sprawdzanie zapisów...</p>}
 
-      {selectedRepo && !checkingEnrollment && (
+      {enrollmentModalOpen && (
         <div className="enrollment-modal">
           {isUserEnrolled ? (
             <p>Jesteś już zapisany. Czekaj na akceptację.</p>
@@ -165,6 +183,7 @@ function HomePage() {
               </button>
             </div>
           )}
+          <button onClick={() => setEnrollmentModalOpen(false)}>Zamknij</button>
         </div>
       )}
     </div>

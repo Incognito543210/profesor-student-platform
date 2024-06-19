@@ -1,30 +1,35 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./CreateUpdateRepositoryPage.css";
 
 function CreateUpdateRepositoryPage() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const location = useLocation();
+  const repository = location.state?.repository;
 
-  const [name, setName] = useState("");
-  const [topic, setTopic] = useState("");
-  const [createdById, setCreatedById] = useState("");
+  const [name, setName] = useState(repository?.name || "");
+  const [topic, setTopic] = useState(repository?.topic || "");
+  const [createdById, setCreatedById] = useState(repository?.createdById || "");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const repositoryData = {
-      repositoryID: 0,
+      repositoryID: repository ? repository.repositoryID : 0,
       name: name,
       topic: topic,
-      createdById: 0,
+      createdById: repository ? repository.createdById : 0,
     };
 
     try {
       const response = await fetch(
-        "https://localhost:7164/API/Repository/createRepository",
+        repository
+          ? "https://localhost:7164/API/Repository/updateRepository"
+          : "https://localhost:7164/API/Repository/createRepository",
         {
-          method: "POST",
+          method: repository ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -33,21 +38,59 @@ function CreateUpdateRepositoryPage() {
         }
       );
 
+      // Log raw response for debugging
+      const rawResponse = await response.text();
+      console.log("Raw response:", rawResponse);
+
       if (response.ok) {
-        const data = await response.json();
-        console.log("Repository created successfully:", data);
-        navigate("/repositories"); // Redirect to the repositories list page or another page
+        // Handle plain text response
+        if (response.headers.get("content-type").includes("application/json")) {
+          const data = JSON.parse(rawResponse);
+          console.log(
+            repository
+              ? "Repository updated successfully:"
+              : "Repository created successfully:",
+            data
+          );
+          navigate("/repositoryPage", {
+            state: { id: data.repositoryID },
+          });
+        } else {
+          console.log(
+            repository
+              ? "Repository updated successfully"
+              : "Repository created successfully"
+          );
+          // Use the repository ID or navigate to the repositories list page
+          const repositoryID = repository ? repository.repositoryID : 0; // Default to 0 or handle appropriately
+          navigate("/home", {
+            state: { id: repositoryID },
+          });
+        }
       } else {
-        console.error("Failed to create repository");
+        const errorData = response.headers
+          .get("content-type")
+          .includes("application/json")
+          ? JSON.parse(rawResponse)
+          : { message: rawResponse };
+        console.error(
+          repository
+            ? "Failed to update repository"
+            : "Failed to create repository",
+          errorData
+        );
+        setErrorMessage(errorData.message || "An unexpected error occurred.");
       }
     } catch (error) {
       console.error("Error:", error);
+      setErrorMessage("Network error. Please try again later.");
     }
   };
 
   return (
     <div className="create-update-repository">
-      <h1>Create Repository</h1>
+      <h1>{repository ? "Update Repository" : "Create Repository"}</h1>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>
@@ -71,7 +114,9 @@ function CreateUpdateRepositoryPage() {
             />
           </label>
         </div>
-        <button type="submit">Create Repository</button>
+        <button type="submit">
+          {repository ? "Update Repository" : "Create Repository"}
+        </button>
       </form>
     </div>
   );

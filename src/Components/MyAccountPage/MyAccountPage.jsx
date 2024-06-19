@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function MyAccountPage() {
   const [userData, setUserData] = useState(null);
+  const [role, setRole] = useState("");
   const [myRepositories, setMyRepositories] = useState([]);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -19,9 +20,17 @@ function MyAccountPage() {
       },
     })
       .then((response) => response.json())
-      .then((data) => setUserData(data))
-      .catch((error) => console.error("Error fetching assignments:", error));
-    console.log(userData);
+      .then((data) => {
+        setUserData(data);
+        if (data.roleID === 2) {
+          setRole("Nauczyciel");
+        } else if (data.roleID === 3) {
+          setRole("Student");
+        } else if (data.roleID === 1) {
+          setRole("Admin");
+        }
+      })
+      .catch((error) => console.error("Error fetching user data:", error));
   }, [token]);
 
   useEffect(() => {
@@ -43,6 +52,10 @@ function MyAccountPage() {
   const handleLogout = () => {
     localStorage.setItem("token", "");
     localStorage.removeItem("token");
+    localStorage.setItem("role", "");
+    localStorage.removeItem("role");
+    localStorage.setItem("user", "");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -62,6 +75,7 @@ function MyAccountPage() {
           <h1>{userData.userLastName}</h1>
           <h1>{userData.email}</h1>
           <h1>{userData.enterDate}</h1>
+          <h1>{role}</h1>
         </div>
       ) : (
         <p>Loading...</p>
