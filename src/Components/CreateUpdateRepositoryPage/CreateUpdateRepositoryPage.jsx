@@ -118,7 +118,7 @@ function CreateUpdateRepositoryPage() {
       <div className="header-buttons">
         <button onClick={goToMyAccountPage}>My account</button>
         <button onClick={handleLogout}>Logout</button>
-        <button onClick={goToHome}>Pepositories</button>
+        <button onClick={goToHome}>Repositories</button>
       </div>
 
       <h1>{repository ? "Update Repository" : "Create Repository"}</h1>

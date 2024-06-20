@@ -63,6 +63,10 @@ function RepositoryPage() {
     navigate("/");
   };
 
+  const goToCreateAssignment = () =>{
+    navigate("/createAssignmentPage", {state: { repository }});
+  }
+
   const goToMyAccountPage = () => {
     navigate("/myAccountPage");
   };
@@ -90,6 +94,9 @@ function RepositoryPage() {
         )}
         {canUpdateRepository && (
           <button onClick={goToUpdateRepositoryPage}>Update Repository</button>
+        )}
+        {canUpdateRepository && (
+          <button onClick={goToCreateAssignment}>Create Assignment</button>
         )}
       </div>
       {repository ? (

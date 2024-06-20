@@ -11,6 +11,7 @@ import AcceptStudentsPage from "./Components/AcceptStudentsPage/AcceptStudentsPa
 import EditAccountPage from "./Components/EditAccountPage/EditAccountPage";
 import AcceptUserPage from "./Components/AcceptUserPage/AcceptUserPage";
 import WaitingPage from "./Components/WaitingPage/WaitingPage";
+import CreateAssignmentPage from "./Components/CreateAssignmentPage/CreateAssignmentPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             path="/CreateUpdateRepositoryPage"
             element={<CreateUpdateRepositoryPage />}
           />
+          <Route path="/createAssignmentPage" element={<CreateAssignmentPage/>}/>
           <Route path="/acceptStudentsPage" element={<AcceptStudentsPage />} />
           <Route path="/editAccountPage" element={<EditAccountPage />} />
           <Route path="/acceptUserPage" element={<AcceptUserPage />} />
