@@ -145,13 +145,15 @@ const LoginSignup = () => {
   return (
     <div className="container">
       <div className="header">
-        <div className="action-buttons">
+        <div className="action-button">
           <button
             onClick={() => setAction("Login")}
             className={action === "Login" ? "active" : ""}
           >
             Login
           </button>
+        </div>
+        <div className="action-button">
           <button
             onClick={() => setAction("Sign Up")}
             className={action === "Sign Up" ? "active" : ""}
@@ -166,7 +168,7 @@ const LoginSignup = () => {
         {action === "Login" ? null : (
           <>
             <div className="input">
-              <img src={user_icon} alt="" />
+              <img src={user_icon} alt="user icon" />
               <input
                 type="text"
                 name="userFirstName"
@@ -179,7 +181,7 @@ const LoginSignup = () => {
               )}
             </div>
             <div className="input">
-              <img src={user_icon} alt="" />
+              <img src={user_icon} alt="user icon" />
               <input
                 type="text"
                 name="userLastName"
@@ -194,7 +196,7 @@ const LoginSignup = () => {
           </>
         )}
         <div className="input">
-          <img src={email_icon} alt="" />
+          <img src={email_icon} alt="email icon" />
           <input
             type="email"
             name="email"
@@ -205,7 +207,7 @@ const LoginSignup = () => {
           {errors.email && <span className="error">{errors.email}</span>}
         </div>
         <div className="input">
-          <img src={password_icon} alt="" />
+          <img src={password_icon} alt="password icon" />
           <input
             type={passwordVisible ? "text" : "password"}
             name="password"
@@ -219,14 +221,13 @@ const LoginSignup = () => {
             onClick={togglePasswordVisibility}
             className="toggle-visibility"
           />
-
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
         {action === "Login" ? null : (
           <>
             <div className="input">
-              <img src={password_icon} alt="" />
+              <img src={password_icon} alt="password icon" />
               <input
                 type={confirmPasswordVisible ? "text" : "password"}
                 name="confirmPassword"

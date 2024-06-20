@@ -142,27 +142,33 @@ function HomePage() {
   );
 
   return (
-    <div>
-      <div className="repository-page">
-        <div className="header-buttons">
-          <button onClick={goToMyAccountPage}>My account</button>
-          <button onClick={handleLogout}>Logout</button>
-          {role === "2" && (
-            <button onClick={handleCreateRepository}>Create repository</button>
-          )}
-        </div>
+    <div className="repository-page">
+      <div className="header-buttons">
+        <button onClick={goToMyAccountPage}>My account</button>
+        <button onClick={handleLogout}>Logout</button>
+        {localStorage.getItem("role") === "2" && (
+          <button onClick={handleCreateRepository}>Create repository</button>
+        )}
       </div>
+
       <h1>Repository list</h1>
       <input
         type="text"
         placeholder="Search for repository..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        className="search-bar" // Dodanie klasy dla wyszukiwarki
       />
+
       <ul>
         {filteredRepositories.map((repo) => (
-          <li key={repo.id} onClick={() => checkAndNavigate(repo.repositoryID)}>
+          <li
+            key={repo.id}
+            className="repo-item"
+            onClick={() => checkAndNavigate(repo.repositoryID)}
+          >
             <h2>{repo.name}</h2>
+            <p>{repo.description}</p>
           </li>
         ))}
       </ul>
@@ -176,7 +182,9 @@ function HomePage() {
           ) : (
             <div>
               <p>You are not subscribed to this repository.</p>
-              <button onClick={() => enrollUser(selectedRepo)}>Save me</button>
+              <button onClick={() => enrollUser(selectedRepo)}>
+                Enroll me
+              </button>
             </div>
           )}
           <button onClick={() => setEnrollmentModalOpen(false)}>Close</button>

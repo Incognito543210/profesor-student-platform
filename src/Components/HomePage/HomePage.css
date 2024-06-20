@@ -1,22 +1,28 @@
-/* styles.css */
+/* HomePage.css */
 
 /* Styl dla całej strony */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #fff; /* białe tło */
+  background-color: #f8f9fa; /* zmieniony kolor tła */
 }
 
 /* Styl dla nagłówka */
 h1 {
-  color: #333;
+  color: #f5ecec;
+  text-align: center; /* wycentrowany tekst */
+  margin-bottom: 20px; /* dodatkowy margines na dole */
 }
 
 /* Styl dla listy repozytoriów */
 ul {
   list-style-type: none;
   padding: 0;
+  width: 80%; /* szerokość listy dostosowana do zawartości */
+  margin: auto; /* wyśrodkowanie listy */
+  max-height: 400px; /* maksymalna wysokość listy z paskiem przewijania */
+  overflow-y: auto; /* pasek przewijania, jeśli lista jest dłuższa */
 }
 
 /* Styl dla pojedynczego repozytorium */
@@ -24,79 +30,41 @@ li {
   margin-bottom: 20px;
   border: 1px solid #ddd;
   padding: 10px;
-  transition: background-color 0.3s; /* płynne przejście koloru tła */
+  transition: background-color 0.3s;
+  cursor: pointer; /* wskaźnik kursora po najechaniu */
 }
 
 /* Podświetlenie po najechaniu myszką */
 li:hover {
-  background-color: #f0f0f0; /* podświetlenie na szarym tle */
+  background-color: #f0f0f0;
 }
 
 /* Styl dla tytułu repozytorium */
 h2 {
-  color: #007bff;
+  color: #f1f1f1;
+  margin-bottom: 5px; /* dodatkowy margines na dole tytułu */
 }
 
 /* Styl dla opisu repozytorium */
 p {
   color: #555;
+  margin-bottom: 10px; /* dodatkowy margines na dole opisu */
 }
 
 /* Styl dla kontenera repozytoriów */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  width: 700px;
-  background: #fff;
-  padding-bottom: 30px;
-}
-
-/* Styl dla pojedynczego elementu repozytorium */
-.repo-item {
-  width: 100%;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  transition: background-color 0.3s; /* płynne przejście koloru tła */
-}
-
-/* Podświetlenie po najechaniu myszką */
-.repo-item:hover {
-  background-color: #f0f0f0; /* podświetlenie na szarym tle */
-}
-
-/* Styl dla tytułu repozytorium w elemencie */
-.repo-title {
-  color: #007bff;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* Styl dla opisu repozytorium w elemencie */
-.repo-description {
-  color: #555;
-}
-
-/* Styl dla ikony repozytorium w elemencie */
-.repo-icon {
-  margin-right: 10px;
-}
-
 .repository-page {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
 }
 
+/* Styl dla przycisków nagłówka */
 .header-buttons {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  display: flex;
+  justify-content: flex-end; /* przyciski wyrównane do prawej */
+  width: 80%; /* szerokość dostosowana do zawartości */
+  margin-bottom: 20px; /* dodatkowy margines na dole */
 }
 
 .header-buttons button {
@@ -114,6 +82,7 @@ p {
   background-color: #0056b3;
 }
 
+/* Styl dla modalu zapisu */
 .enrollment-modal {
   position: fixed;
   top: 50%;
@@ -123,5 +92,26 @@ p {
   padding: 20px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Ustaw z-index wyższy niż reszta zawartości */
+  z-index: 1000;
+}
+
+/* Nowy styl dla pojedynczego repozytorium */
+.repo-item {
+  width: 80%;
+  margin-bottom: 20px;
+  padding: 10px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  margin: auto;
+  border-radius: 20px; /* Nowa właściwość dla owalnego kształtu */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Cień */
+}
+
+.search-bar {
+  width: 80%;
+  margin: 20px auto; /* Mniejszy margines od góry, większy od dołu */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
