@@ -201,5 +201,4 @@ function AcceptStudentsPage() {
     </div>
   );
 }
-
 export default AcceptStudentsPage;

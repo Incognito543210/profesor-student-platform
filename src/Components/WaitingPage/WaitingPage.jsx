@@ -22,7 +22,7 @@ function WaitingPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
 
       <h1>

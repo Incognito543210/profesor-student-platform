@@ -1,36 +1,86 @@
 .create-update-repository {
-  margin: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #fff; /* Biały kolor tekstu dla całego formularza */
 }
 
-.create-update-repository form {
+.header-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.header-buttons button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.header-buttons button:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fff; /* Biały kolor tytułu */
+  font-weight: bold; /* Pogrubienie tytułu */
+}
+
+form {
   display: flex;
   flex-direction: column;
 }
 
-.create-update-repository label {
-  margin-bottom: 10px;
+form > div {
+  margin-bottom: 15px;
 }
 
-.create-update-repository input {
-  margin-left: 10px;
-  padding: 5px;
+label {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #fff; /* Biały kolor tekstu dla etykiet */
+  font-weight: bold; /* Pogrubienie etykiet */
 }
 
-.create-update-repository button {
-  margin-top: 20px;
+input[type="text"] {
   padding: 10px;
-  background-color: #007bff;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #28a745;
   color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
+  align-self: center;
+  font-size: 16px;
 }
 
-.create-update-repository button:hover {
-  background-color: #0056b3;
+button[type="submit"]:hover {
+  background-color: #218838;
 }
 
 .error-message {
-  color: red;
-  font-weight: bold;
+  color: #dc3545;
+  font-size: 14px;
   margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .create-update-repository {
+    padding: 10px;
+  }
 }

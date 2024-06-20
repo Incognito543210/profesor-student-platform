@@ -1,0 +1,38 @@
+.repository-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center; /* Tekst na środku */
+  color: #fff; /* Biały kolor tekstu */
+}
+
+.header-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.header-buttons button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.header-buttons button:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .repository-page {
+    padding: 10px;
+  }
+}

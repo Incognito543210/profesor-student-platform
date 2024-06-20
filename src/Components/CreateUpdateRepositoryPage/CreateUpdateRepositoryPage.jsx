@@ -16,6 +16,17 @@ function CreateUpdateRepositoryPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation checks
+    if (name.trim().length === 0 || topic.trim().length === 0) {
+      setErrorMessage("Name and Topic cannot be empty.");
+      return;
+    }
+
+    if (name.length < 20 || topic.length < 20) {
+      setErrorMessage("Name and Topic must be at least 20 characters long.");
+      return;
+    }
+
     const repositoryData = {
       repositoryID: repository ? repository.repositoryID : 0,
       name: name,
@@ -38,12 +49,11 @@ function CreateUpdateRepositoryPage() {
         }
       );
 
-      // Log raw response for debugging
+      // Handle response
       const rawResponse = await response.text();
       console.log("Raw response:", rawResponse);
 
       if (response.ok) {
-        // Handle plain text response
         if (response.headers.get("content-type").includes("application/json")) {
           const data = JSON.parse(rawResponse);
           console.log(
@@ -61,8 +71,7 @@ function CreateUpdateRepositoryPage() {
               ? "Repository updated successfully"
               : "Repository created successfully"
           );
-          // Use the repository ID or navigate to the repositories list page
-          const repositoryID = repository ? repository.repositoryID : 0; // Default to 0 or handle appropriately
+          const repositoryID = repository ? repository.repositoryID : 0;
           navigate("/home", {
             state: { id: repositoryID },
           });
@@ -87,8 +96,31 @@ function CreateUpdateRepositoryPage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
+    localStorage.setItem("role", "");
+    localStorage.removeItem("role");
+    localStorage.setItem("user", "");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
+  const goToMyAccountPage = () => {
+    navigate("/myAccountPage");
+  };
+
+  const goToHome = () => {
+    navigate("/home");
+  };
   return (
     <div className="create-update-repository">
+      <div className="header-buttons">
+        <button onClick={goToMyAccountPage}>My account</button>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={goToHome}>Pepositories</button>
+      </div>
+
       <h1>{repository ? "Update Repository" : "Create Repository"}</h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
@@ -99,6 +131,7 @@ function CreateUpdateRepositoryPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              minLength={20}
               required
             />
           </label>
@@ -110,6 +143,7 @@ function CreateUpdateRepositoryPage() {
               type="text"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
+              minLength={20}
               required
             />
           </label>
