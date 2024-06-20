@@ -23,12 +23,20 @@ const LoginSignup = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-
+  const [isApproved, setIsApproved] = useState(false);
   const [errors, setErrors] = useState({});
   const [goToHome, setGoToHome] = React.useState(false);
 
+  const goHome = () => {
+    if (isApproved) {
+      return <Navigate to="/home" />;
+    } else {
+      return <Navigate to="/waitingpage" />;
+    }
+  };
+
   if (goToHome) {
-    return <Navigate to="/home" />;
+    return goHome();
   }
 
   const handleChange = (e) => {
@@ -90,10 +98,32 @@ const LoginSignup = () => {
         }),
       });
       if (response.ok) {
-        // Login successful, you can handle the token or redirect
+        // Login successful, check approval status
         const token = await response.text();
         localStorage.setItem("token", token);
-        setGoToHome(true);
+
+        // Check if user is approved
+        const approvalResponse = await fetch(
+          `https://localhost:7164/API/Account/isApproved`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, // Assuming token is required for approval check
+            },
+          }
+        );
+
+        if (approvalResponse.ok) {
+          const isApproved = await approvalResponse.json();
+          setIsApproved(isApproved);
+
+          // Redirect based on approval status
+          setGoToHome(true);
+        } else {
+          const errorMessage = await approvalResponse.text();
+          console.error("Error checking approval status:", errorMessage);
+          setApiError(errorMessage);
+        }
       } else {
         const errorMessage = await response.text();
         console.error("Login failed:", errorMessage);

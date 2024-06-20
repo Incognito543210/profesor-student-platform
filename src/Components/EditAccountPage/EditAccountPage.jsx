@@ -71,6 +71,7 @@ function EditAccountPage() {
     }
 
     formData.userID = localStorage.getItem("user");
+    formData.userID = localStorage.getItem("role");
     try {
       const response = await fetch(
         "https://localhost:7164/API/Account/updateUser",
@@ -84,8 +85,7 @@ function EditAccountPage() {
         }
       );
       if (response.ok) {
-        navigate("/");
-        handleLogout();
+        navigate("/myAccountPage");
       } else {
         const errorMessage = await response.text();
         setApiError(errorMessage);

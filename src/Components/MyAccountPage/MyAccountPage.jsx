@@ -66,12 +66,21 @@ function MyAccountPage() {
   const goToEditAccount = () => {
     navigate("/editAccountPage", { state: { userData } });
   };
+
+  const goToAcceptUser = () => {
+    navigate("/acceptUserPage");
+  };
+
   return (
     <div className="repository-page">
       <div className="header-buttons">
         <button onClick={goToHome}>Repozytoria</button>
         <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={goToEditAccount}>Edit</button>
       </div>
+      {role === "Admin" && (
+        <button onClick={goToAcceptUser}>Akceptuj użytkowników</button>
+      )}
       {userData ? (
         <div>
           <h1>{userData.userFirstName}</h1>
