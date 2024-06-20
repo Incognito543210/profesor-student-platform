@@ -145,19 +145,17 @@ function HomePage() {
     <div>
       <div className="repository-page">
         <div className="header-buttons">
-          <button onClick={goToMyAccountPage}>Moje Konto</button>
-          <button onClick={handleLogout}>Wylogowanie</button>
+          <button onClick={goToMyAccountPage}>My account</button>
+          <button onClick={handleLogout}>Logout</button>
           {role === "2" && (
-            <button onClick={handleCreateRepository}>
-              Utwórz repozytorium
-            </button>
+            <button onClick={handleCreateRepository}>Create repository</button>
           )}
         </div>
       </div>
-      <h1>Lista repozytoriów</h1>
+      <h1>Repository list</h1>
       <input
         type="text"
-        placeholder="Wyszukaj repozytorium..."
+        placeholder="Search for repository..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -169,21 +167,19 @@ function HomePage() {
         ))}
       </ul>
 
-      {checkingEnrollment && <p>Sprawdzanie zapisów...</p>}
+      {checkingEnrollment && <p>Checking records...</p>}
 
       {enrollmentModalOpen && (
         <div className="enrollment-modal">
           {isUserEnrolled ? (
-            <p>Jesteś już zapisany. Czekaj na akceptację.</p>
+            <p>You are already registered. Wait for acceptance.</p>
           ) : (
             <div>
-              <p>Nie jesteś zapisany do tego repozytorium.</p>
-              <button onClick={() => enrollUser(selectedRepo)}>
-                Zapisz mnie
-              </button>
+              <p>You are not subscribed to this repository.</p>
+              <button onClick={() => enrollUser(selectedRepo)}>Save me</button>
             </div>
           )}
-          <button onClick={() => setEnrollmentModalOpen(false)}>Zamknij</button>
+          <button onClick={() => setEnrollmentModalOpen(false)}>Close</button>
         </div>
       )}
     </div>

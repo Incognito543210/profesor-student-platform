@@ -12,7 +12,7 @@ function AcceptStudentsPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
-  const [modalIsOpen, setModalIsOpen] = useState(false); // State for modal
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -106,7 +106,7 @@ function AcceptStudentsPage() {
     const currentUserID = localStorage.getItem("user");
 
     if (currentUserID && userID.toString() === currentUserID) {
-      setErrorMessage("Nie możesz usunąć siebie z listy studentów.");
+      setErrorMessage("You cannot remove yourself from the student list.");
       setModalIsOpen(true); // Open modal on error
       return;
     }
@@ -147,9 +147,9 @@ function AcceptStudentsPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={goToMyAccountPage}>Moje Konto</button>
-        <button onClick={handleLogout}>Wylogowanie</button>
-        <button onClick={goToHome}>Repozytoria</button>
+        <button onClick={goToMyAccountPage}>My account</button>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={goToHome}>Repositories</button>
       </div>
       <div className="student-lists">
         <div className="student-list">

@@ -123,26 +123,27 @@ function EditAccountPage() {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
 
+  const goToMyAccountPage = () => {
+    navigate("/myAccountPage");
+  };
+
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={goToHome}>Repozytoria</button>
-        <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={goToHome}>Pepositories</button>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={goToMyAccountPage}>My account</button>
       </div>
-      <h1>Edytuj Konto:</h1>
+      <h1>Edit account</h1>
       <form onSubmit={handleFormSubmit} className="edit-account-form">
         <div className="input">
           <img src={email_icon} alt="" />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            readOnly
-          />
+          <p>Email: </p>
+          <input type="email" name="email" value={formData.email} readOnly />
         </div>
         <div className="input">
           <img src={password_icon} alt="" />
+          <p>Current password: </p>
           <input
             type={passwordVisible ? "text" : "password"}
             name="currentPassword"
@@ -162,10 +163,10 @@ function EditAccountPage() {
         </div>
         <div className="input">
           <img src={password_icon} alt="" />
+          <p>New password: </p>
           <input
             type={passwordVisible ? "text" : "password"}
             name="password"
-            placeholder="New Password"
             value={formData.password || ""}
             onChange={handleInputChange}
           />
@@ -179,6 +180,7 @@ function EditAccountPage() {
         </div>
         <div className="input">
           <img src={password_icon} alt="" />
+          <p>Confirm new passowrd: </p>
           <input
             type={confirmPasswordVisible ? "text" : "password"}
             name="confirmPassword"
@@ -198,6 +200,7 @@ function EditAccountPage() {
         </div>
         <div className="input">
           <img src={user_icon} alt="" />
+          <p>First name: </p>
           <input
             type="text"
             name="userFirstName"
@@ -211,10 +214,10 @@ function EditAccountPage() {
         </div>
         <div className="input">
           <img src={user_icon} alt="" />
+          <p>Last name:</p>
           <input
             type="text"
             name="userLastName"
-            placeholder="Last Name"
             value={formData.userLastName}
             onChange={handleInputChange}
           />

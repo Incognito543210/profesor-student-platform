@@ -83,12 +83,10 @@ function RepositoryPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={goToMyAccountPage}>Moje Konto</button>
-        <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={goToMyAccountPage}>My account</button>
+        <button onClick={handleLogout}>Logout</button>
         {canUpdateRepository && (
-          <button onClick={goToAcceptStudentsPage}>
-            Akceptowanie Studentów
-          </button>
+          <button onClick={goToAcceptStudentsPage}>Accept students</button>
         )}
         {canUpdateRepository && (
           <button onClick={goToUpdateRepositoryPage}>Update Repository</button>

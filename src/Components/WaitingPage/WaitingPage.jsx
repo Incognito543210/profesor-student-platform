@@ -25,7 +25,10 @@ function WaitingPage() {
         <button onClick={handleLogout}>Wylogowanie</button>
       </div>
 
-      <h1>Moje repozytoria:</h1>
+      <h1>
+        Access to the resources will be granted after approval by the
+        administrator.
+      </h1>
     </div>
   );
 }

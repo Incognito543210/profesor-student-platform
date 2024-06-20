@@ -11,8 +11,8 @@ function AssignmentPage() {
   const roleID = localStorage.getItem("role");
   const isStudent = roleID == 3 ? false : true;
   const [users, setUsers] = useState([]);
-  const [mark, setMark] = useState("")
-  const [comment, setComment] = useState("")
+  const [mark, setMark] = useState("");
+  const [comment, setComment] = useState("");
   const location = useLocation();
   const assignmentID = location.state.id;
   console.log(location);
@@ -79,33 +79,37 @@ function AssignmentPage() {
       console.error("Token not found in local storage");
       return;
     }
-    if(roleID != 3) {
-    fetch("https://localhost:7164/API/Assigment/getUserAssignments/" + assignmentID,
-      {
-        headers:{
-          Authorization: `Bearer ${token}`,
+    if (roleID != 3) {
+      fetch(
+        "https://localhost:7164/API/Assigment/getUserAssignments/" +
+          assignmentID,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
-    )
-    .then((response) => response.json())
-    .then((data) => setUsers(data))
-    .catch((error) => console.error("Error fetching data:", error));
-    console.log(users);
-  }
-  else{
-    fetch("https://localhost:7164/API/Assigment/getUserAssignments/" + assignmentID + userID,
-      {
-        headers:{
-          Authorization: `Bearer ${token}`,
+      )
+        .then((response) => response.json())
+        .then((data) => setUsers(data))
+        .catch((error) => console.error("Error fetching data:", error));
+      console.log(users);
+    } else {
+      fetch(
+        "https://localhost:7164/API/Assigment/getUserAssignments/" +
+          assignmentID +
+          userID,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
-    )
-    .then((response) => response.json())
-    .then((data) => setUsers(data))
-    .catch((error) => console.error("Error fetching data:", error));
-    console.log(users);
-  }
-  }, [token, assignmentID]);  
+      )
+        .then((response) => response.json())
+        .then((data) => setUsers(data))
+        .catch((error) => console.error("Error fetching data:", error));
+      console.log(users);
+    }
+  }, [token, assignmentID]);
 
   const handleLogout = () => {
     localStorage.setItem("token", "");
@@ -174,13 +178,13 @@ function AssignmentPage() {
       });
   }
 
-  function handleCommentAndMark(userID){
-    const userMarkAndComment ={
-      assigmnentID : assignmentID,
-      userID : userID,
+  function handleCommentAndMark(userID) {
+    const userMarkAndComment = {
+      assigmnentID: assignmentID,
+      userID: userID,
       mark: mark,
-      comment: comment
-    }
+      comment: comment,
+    };
     const response = fetch(
       "https://localhost:7164/API/Assigment/CommentAndMark",
       {
@@ -202,8 +206,8 @@ function AssignmentPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={goToMyAccountPage}>Moje Konto</button>
-        <button onClick={handleLogout}>Wylogowanie</button>
+        <button onClick={goToMyAccountPage}>My account</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
       {assignment ? (
         <div>
@@ -214,62 +218,54 @@ function AssignmentPage() {
           <br />
           <br />
           <button onClick={handleUpload}>Upload</button>
-          
-          <div
-            hidden = {isStudent}
-          >
+
+          <div hidden={isStudent}>
             <ul>
-              {users.map((user)=>(
+              {users.map((user) => (
                 <li key={user.userID}>
-                  <p/>
-                  <label>
-                    Ocena: {user.mark}
-                  </label>
-                  <p/>
-                  <label>
-                    Komentarz: {user.comment}
-                  </label>
+                  <p />
+                  <label>Ocena: {user.mark}</label>
+                  <p />
+                  <label>Komentarz: {user.comment}</label>
                   <p>Lista plików:</p>
                   <ul>
-                    {files.map((file) =>(
-                      <li key={file.fileName} onClick={()=>handleDownload(file.fileName)}>
-                      <a>{file.fileName}</a>
+                    {files.map((file) => (
+                      <li
+                        key={file.fileName}
+                        onClick={() => handleDownload(file.fileName)}
+                      >
+                        <a>{file.fileName}</a>
                       </li>
-                    ))
-                  }
+                    ))}
                   </ul>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div
-            hidden = {!isStudent}
-          >
-            <p>Lista uczniów:</p>
+          <div hidden={!isStudent}>
+            <p>List of students:</p>
             <ul>
-              {users.map((user)=>(
+              {users.map((user) => (
                 <li key={user.userID}>
+                  <label>Student ID:{user.userID}</label>
+                  <p />
                   <label>
-                    ID Ucznia: {user.userID}
-                  </label>
-                  <p/>
-                  <label>
-                    Ocena: {user.mark}
+                    Rating: {user.mark}
                     <input
                       type="number"
-                      min = "2"
-                      max = "5"
-                      step = "0.5"
+                      min="2"
+                      max="5"
+                      step="0.5"
                       content={user.mark}
                       value={mark}
                       onChange={(e) => setMark(e.target.value)}
                     />
                   </label>
-                  <p/>
+                  <p />
                   <label>
-                    Komentarz: {user.comment}
-                    <p/>
+                    Comment: {user.comment}
+                    <p />
                     <input
                       type="text"
                       content={user.comment}
@@ -277,15 +273,22 @@ function AssignmentPage() {
                       onChange={(e) => setComment(e.target.value)}
                     />
                   </label>
-                  <button type="submit" onClick={()=> handleCommentAndMark(user.userID)}>Zapisz ocenę i komentarz</button>
-                  <p>Lista plików:</p>
+                  <button
+                    type="submit"
+                    onClick={() => handleCommentAndMark(user.userID)}
+                  >
+                    Zapisz ocenę i komentarz
+                  </button>
+                  <p>File list:</p>
                   <ul>
-                    {files.map((file) =>(
-                      <li key={file.fileName} onClick={()=>handleDownload(file.fileName)}>
-                      <a>{file.fileName}</a>
+                    {files.map((file) => (
+                      <li
+                        key={file.fileName}
+                        onClick={() => handleDownload(file.fileName)}
+                      >
+                        <a>{file.fileName}</a>
                       </li>
-                    ))
-                  }
+                    ))}
                   </ul>
                 </li>
               ))}

@@ -12,42 +12,34 @@ function AcceptUserPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
-  const [modalIsOpen, setModalIsOpen] = useState(false); // State for modal
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     if (!token) {
       return;
     }
 
-    // Fetch users to be accepted
-    fetch(
-      "https://localhost:7164/API/Account/accountToConfirm", // Assuming this endpoint exists for admin to accept users
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch("https://localhost:7164/API/Account/accountToConfirm", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => setUserList(data))
       .catch((error) => console.error("Error fetching users:", error));
 
-    // Fetch accepted users
-    fetch(
-      "https://localhost:7164/API/Account/ConfirmedAccount", // Endpoint for accepted users by admin
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch("https://localhost:7164/API/Account/ConfirmedAccount", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => setAcceptedUserList(data))
       .catch((error) => console.error("Error fetching accepted users:", error));
   }, [token]);
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear all localStorage items
+    localStorage.clear();
     navigate("/");
   };
 
@@ -60,16 +52,13 @@ function AcceptUserPage() {
   };
 
   const acceptUser = (userID) => {
-    fetch(
-      "https://localhost:7164/API/Account/confirmUSer/" + userID, // Endpoint for admin to accept a user
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch("https://localhost:7164/API/Account/confirmUSer/" + userID, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (response.ok) {
           console.log("User accepted successfully!");
@@ -77,27 +66,24 @@ function AcceptUserPage() {
         } else {
           console.error("Failed to accept user.");
           setErrorMessage("Failed to accept user.");
-          setModalIsOpen(true); // Open modal on error
+          setModalIsOpen(true);
         }
       })
       .catch((error) => {
         console.error("Error accepting user:", error);
         setErrorMessage("Error accepting user.");
-        setModalIsOpen(true); // Open modal on error
+        setModalIsOpen(true);
       });
   };
 
   const removeUser = (userID) => {
-    fetch(
-      `https://localhost:7164/API/Admin/removeUser/${userID}`, // Endpoint for admin to remove a user
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch(`https://localhost:7164/API/Admin/removeUser/${userID}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (response.ok) {
           console.log("User removed successfully!");
@@ -107,22 +93,22 @@ function AcceptUserPage() {
         } else {
           console.error("Failed to remove user.");
           setErrorMessage("Failed to remove user.");
-          setModalIsOpen(true); // Open modal on error
+          setModalIsOpen(true);
         }
       })
       .catch((error) => {
         console.error("Error removing user:", error);
         setErrorMessage("Error removing user.");
-        setModalIsOpen(true); // Open modal on error
+        setModalIsOpen(true);
       });
   };
 
   return (
     <div className="admin-page">
       <div className="header-buttons">
-        <button onClick={goToMyAccountPage}>Moje Konto</button>
-        <button onClick={handleLogout}>Wylogowanie</button>
-        <button onClick={goToHome}>Repozytoria</button>
+        <button onClick={goToMyAccountPage}>My account</button>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={goToHome}>Repositories</button>
       </div>
       <div className="user-lists">
         <div className="user-list">

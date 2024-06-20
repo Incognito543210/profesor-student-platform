@@ -74,26 +74,29 @@ function MyAccountPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={goToHome}>Repozytoria</button>
-        <button onClick={handleLogout}>Wylogowanie</button>
-        <button onClick={goToEditAccount}>Edit</button>
+        <button onClick={goToHome}>Repositories</button>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={goToEditAccount}> Edit account</button>
       </div>
       {role === "Admin" && (
-        <button onClick={goToAcceptUser}>Akceptuj użytkowników</button>
+        <button onClick={goToAcceptUser}>Accept users</button>
       )}
       {userData ? (
         <div>
-          <h1>{userData.userFirstName}</h1>
-          <h1>{userData.userLastName}</h1>
-          <h1>{userData.email}</h1>
-          <h1>{userData.enterDate}</h1>
-          <h1>{role}</h1>
+          <h1>User info:</h1>
+          <h2>First name: {userData.userFirstName}</h2>
+          <h2>Last name: {userData.userLastName}</h2>
+          <h2>Email: {userData.email}</h2>
+          <h2>
+            Enter date: {new Date(userData.enterDate).toLocaleDateString()}
+          </h2>
+          <h2>Role: {role}</h2>
         </div>
       ) : (
         <p>Loading...</p>
       )}
 
-      <h1>Moje repozytoria:</h1>
+      <h1>My repositories:</h1>
       <ul>
         {myRepositories.map((repo) => (
           <li
