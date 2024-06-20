@@ -15,6 +15,7 @@ const LoginSignup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    currentPassword: "",
     roleId: 0,
     userFirstName: "",
     userLastName: "",

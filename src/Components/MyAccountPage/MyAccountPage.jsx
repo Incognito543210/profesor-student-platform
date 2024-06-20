@@ -63,6 +63,9 @@ function MyAccountPage() {
     navigate("/home");
   };
 
+  const goToEditAccount = () => {
+    navigate("/editAccountPage", { state: { userData } });
+  };
   return (
     <div className="repository-page">
       <div className="header-buttons">

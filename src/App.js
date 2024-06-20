@@ -8,6 +8,7 @@ import AssignmentPage from "./Components/AssignmentPage/AssignmentPage";
 import MyAccountPage from "./Components/MyAccountPage/MyAccountPage";
 import CreateUpdateRepositoryPage from "./Components/CreateUpdateRepositoryPage/CreateUpdateRepositoryPage";
 import AcceptStudentsPage from "./Components/AcceptStudentsPage/AcceptStudentsPage";
+import EditAccountPage from "./Components/EditAccountPage/EditAccountPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             element={<CreateUpdateRepositoryPage />}
           />
           <Route path="/acceptStudentsPage" element={<AcceptStudentsPage />} />
+          <Route path="/editAccountPage" element={<EditAccountPage />} />
         </Routes>
       </Router>
     </div>
