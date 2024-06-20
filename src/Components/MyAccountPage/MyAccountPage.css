@@ -1,25 +1,53 @@
-.repository-page {
-  position: relative;
+/* MyAccountPage.css */
+
+/* Styl dla całej strony */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* zmieniony kolor tła */
+}
+
+/* Styl dla białego boksu user info */
+.user-info-box {
+  background-color: white;
   padding: 20px;
+  border-radius: 10px; /* zaokrąglenie rogów */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* cień */
+  margin-bottom: 20px; /* odstęp na dole */
 }
 
-.header-buttons {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+/* Styl dla litery w kolorze tła */
+.user-info-box h1,
+.user-info-box h2 {
+  color: black; /* kolor tekstu tła */
 }
 
-.header-buttons button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
+/* Styl dla listy repozytoriów */
+ul {
+  list-style-type: none;
+  padding: 0;
+  width: 80%; /* szerokość listy */
+  margin: 50; /* wyśrodkowanie listy */
+}
+
+/* Styl dla pojedynczego repozytorium */
+li {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  transition: background-color 0.3s;
   cursor: pointer;
-  font-size: 14px;
+  border-radius: 10px; /* zaokrąglenie rogów */
 }
 
-.header-buttons button:hover {
-  background-color: #0056b3;
+/* Podświetlenie po najechaniu myszką */
+li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Styl dla tytułu repozytorium */
+h2 {
+  color: white;
+  margin-bottom: 5px; /* dodatkowy margines na dole tytułu */
 }

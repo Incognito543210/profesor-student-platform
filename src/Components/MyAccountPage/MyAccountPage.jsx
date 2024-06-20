@@ -76,13 +76,14 @@ function MyAccountPage() {
       <div className="header-buttons">
         <button onClick={goToHome}>Repositories</button>
         <button onClick={handleLogout}>Logout</button>
-        <button onClick={goToEditAccount}> Edit account</button>
+        <button onClick={goToEditAccount}>Edit account</button>
       </div>
       {role === "Admin" && (
         <button onClick={goToAcceptUser}>Accept users</button>
       )}
+
       {userData ? (
-        <div>
+        <div className="user-info-box">
           <h1>User info:</h1>
           <h2>First name: {userData.userFirstName}</h2>
           <h2>Last name: {userData.userLastName}</h2>

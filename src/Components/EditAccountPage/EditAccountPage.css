@@ -1,0 +1,47 @@
+.edit-account-form .input {
+  margin-bottom: 20px; /* Większy margines między polami */
+  width: auto;
+}
+.edit-account-form .submit,
+.edit-account-form .delete-account-button {
+  margin-top: 20px; /* Dodatkowy margines na górze przycisków */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%; /* Szerokość przycisków na 100% */
+  box-sizing: border-box; /* Zapewnienie, że padding nie zwiększa szerokości */
+}
+.edit-account-form label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.edit-account-form input[type="text"],
+.edit-account-form input[type="password"],
+.edit-account-form input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.edit-account-form .submit:hover,
+.edit-account-form .delete-account-button:hover {
+  background-color: #0056b3;
+}
+
+.edit-account-form input[name="userLastName"] {
+  width: 100%;
+}
+
+.edit-account-form {
+  /* Dodaj lub upewnij się, że kontener ma odpowiednie style tła */
+  background-color: #f8f9fa; /* Przykładowy kolor tła */
+  padding: 20px; /* Przykładowy padding */
+}
