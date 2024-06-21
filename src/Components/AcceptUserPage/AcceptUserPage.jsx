@@ -76,19 +76,27 @@ function AcceptUserPage() {
       });
   };
 
-  const removeUser = (userID) => {
-    fetch(`https://localhost:7164/API/Admin/removeUser/${userID}`, {
+  const removeUser = (user) => {
+    const currentUserID = localStorage.getItem("user");
+    if (currentUserID && user.userID.toString() === currentUserID) {
+      setErrorMessage("You cannot remove yourself from the user list.");
+      setModalIsOpen(true); // Open modal on error
+      return;
+    }
+
+    fetch("https://localhost:7164/API/Account/deleteUser", {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(user),
     })
       .then((response) => {
         if (response.ok) {
           console.log("User removed successfully!");
           setAcceptedUserList(
-            acceptedUserList.filter((user) => user.userID !== userID)
+            acceptedUserList.filter((user) => user.userID !== user.userID)
           );
         } else {
           console.error("Failed to remove user.");
@@ -134,7 +142,7 @@ function AcceptUserPage() {
                 <span>{user.userFirstName}</span>
                 <span>{user.userLastName}</span>
                 <span>{user.email}</span>
-                <button onClick={() => removeUser(user.userID)}>Remove</button>
+                <button onClick={() => removeUser(user)}>Remove</button>
               </div>
             ))
           ) : (

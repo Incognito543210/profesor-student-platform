@@ -96,25 +96,6 @@ function EditAccountPage() {
     }
   };
 
-  const handleDeleteAccount = async () => {
-    try {
-      const response = await fetch("YOUR_BACKEND_DELETE_API_URL", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.ok) {
-        handleLogout();
-      } else {
-        const errorMessage = await response.text();
-        console.error("Failed to delete account:", errorMessage);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -227,13 +208,6 @@ function EditAccountPage() {
         </div>
         <button type="submit" className="submit">
           Save Changes
-        </button>
-        <button
-          type="button"
-          onClick={handleDeleteAccount}
-          className="delete-account-button"
-        >
-          Delete Account
         </button>
       </form>
       {apiError && <div className="api-error">{apiError}</div>}

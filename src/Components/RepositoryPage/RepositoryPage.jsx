@@ -63,9 +63,9 @@ function RepositoryPage() {
     navigate("/");
   };
 
-  const goToCreateAssignment = () =>{
-    navigate("/createAssignmentPage", {state: { repository }});
-  }
+  const goToCreateAssignment = () => {
+    navigate("/createAssignmentPage", { state: { repository } });
+  };
 
   const goToMyAccountPage = () => {
     navigate("/myAccountPage");
@@ -79,34 +79,55 @@ function RepositoryPage() {
     navigate("/createUpdateRepositoryPage", { state: { repository } });
   };
 
-  const removeAssignment = (assignment) =>{
+  const removeAssignment = (assignment) => {
     if (!token) {
       return;
     }
 
-    
-  fetch("https://localhost:7164/API/Assigment/deleteAssigment", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(assignment),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
+    fetch("https://localhost:7164/API/Assigment/deleteAssigment", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(assignment),
     })
-    .then((data) => {
-      console.log("Success:", data);
-      window.location.reload();
-    })
-    .catch((error) => console.error("Error fetching assignments:", error));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+        window.location.reload();
+      })
+      .catch((error) => console.error("Error fetching assignments:", error));
 
     window.location.reload();
-  }
+  };
+
+  const removeRepository = () => {
+    if (!token) {
+      return;
+    }
+
+    fetch("https://localhost:7164/API/Repository/deleteRepository", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(repository),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        navigate("/home"); // Redirect to the list of repositories or another appropriate page
+      })
+      .catch((error) => console.error("Error deleting repository:", error));
+  };
 
   const canUpdateRepository =
     repository &&
@@ -119,13 +140,13 @@ function RepositoryPage() {
         <button onClick={goToMyAccountPage}>My account</button>
         <button onClick={handleLogout}>Logout</button>
         {canUpdateRepository && (
-          <button onClick={goToAcceptStudentsPage}>Accept students</button>
-        )}
-        {canUpdateRepository && (
-          <button onClick={goToUpdateRepositoryPage}>Update Repository</button>
-        )}
-        {canUpdateRepository && (
-          <button onClick={goToCreateAssignment}>Create Assignment</button>
+          <>
+            <button onClick={goToAcceptStudentsPage}>Accept students</button>
+            <button onClick={goToUpdateRepositoryPage}>
+              Update Repository
+            </button>
+            <button onClick={goToCreateAssignment}>Create Assignment</button>
+          </>
         )}
       </div>
       {repository ? (
@@ -136,14 +157,16 @@ function RepositoryPage() {
           <h3>Assignments:</h3>
           <ul>
             {assignments.map((assignment) => (
-              <li
-                key={assignment.assignmentID}
-              >
-                <button onClick={() =>
-                  navigate("/assignmentPage", {
-                    state: { id: assignment.assignmentID },
-                  })
-                }>See Assigmnent</button>
+              <li key={assignment.assignmentID}>
+                <button
+                  onClick={() =>
+                    navigate("/assignmentPage", {
+                      state: { id: assignment.assignmentID },
+                    })
+                  }
+                >
+                  See Assigmnent
+                </button>
                 <p>Name: {assignment.name}</p>
                 <p>
                   Start Date:{" "}
@@ -152,15 +175,22 @@ function RepositoryPage() {
                 <p>
                   End Date: {new Date(assignment.endDate).toLocaleDateString()}
                 </p>
-                {canUpdateRepository &&(
-                  <button onClick={() => removeAssignment(assignment)}>Remove Assignment</button>
-                  )}
+                {canUpdateRepository && (
+                  <button onClick={() => removeAssignment(assignment)}>
+                    Remove Assignment
+                  </button>
+                )}
               </li>
             ))}
           </ul>
         </div>
       ) : (
         <p>Loading...</p>
+      )}
+      {canUpdateRepository && (
+        <div className="delete-repository-button">
+          <button onClick={removeRepository}>Delete Repository</button>
+        </div>
       )}
     </div>
   );

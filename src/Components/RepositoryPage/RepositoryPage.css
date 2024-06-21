@@ -9,6 +9,25 @@
   right: 10px;
 }
 
+.delete-repository-button {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.delete-repository-button button {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-repository-button button:hover {
+  background-color: darkred;
+}
+
 .header-buttons button {
   margin-left: 10px;
   padding: 10px 15px;
