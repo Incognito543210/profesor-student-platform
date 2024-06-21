@@ -251,26 +251,27 @@ function AssignmentPage() {
           <div hidden={isStudent}>
             <ul>
               {users.map((user) => (
-                <li key={user.userID}>
-                  <p />
+                  <li key={user.userID}
+                  >
+                  <p/>
                   <label>Ocena: {user.mark}</label>
                   <p />
                   <label>Komentarz: {user.comment}</label>
                   <p>Lista plików:</p>
                   <ul>
-                    {files.map((file) => (
-                      <li
-                        key={file.fileName}
-                      >
+                  {files.map((file) => (
+                    <li
+                    key={file.fileName}
+                    >
                         <a>{file.fileName}</a>
                         <button onClick={() => handleDownload(file.fileName)}>Download File</button>
                         <p/>
                         <button onClick={() => removeFile(file)}>Remove File</button>
                       </li>
                     ))}
-                  </ul>
-                </li>
-              ))}
+                    </ul>
+                    </li>
+                 ))}
             </ul>
           </div>
 
@@ -278,6 +279,7 @@ function AssignmentPage() {
             <p>List of students:</p>
             <ul>
               {users.map((user) => (
+                user.userID === userID &&(
                 <li key={user.userID}>
                   <label>Student ID:{user.userID}</label>
                   <p />
@@ -324,6 +326,7 @@ function AssignmentPage() {
                     ))}
                   </ul>
                 </li>
+                )
               ))}
             </ul>
           </div>
