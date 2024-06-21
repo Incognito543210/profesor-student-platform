@@ -79,6 +79,35 @@ function RepositoryPage() {
     navigate("/createUpdateRepositoryPage", { state: { repository } });
   };
 
+  const removeAssignment = (assignment) =>{
+    if (!token) {
+      return;
+    }
+
+    
+  fetch("https://localhost:7164/API/Assigment/deleteAssigment", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(assignment),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Success:", data);
+      window.location.reload();
+    })
+    .catch((error) => console.error("Error fetching assignments:", error));
+
+    window.location.reload();
+  }
+
   const canUpdateRepository =
     repository &&
     repository.createdById &&
@@ -109,12 +138,12 @@ function RepositoryPage() {
             {assignments.map((assignment) => (
               <li
                 key={assignment.assignmentID}
-                onClick={() =>
+              >
+                <button onClick={() =>
                   navigate("/assignmentPage", {
                     state: { id: assignment.assignmentID },
                   })
-                }
-              >
+                }>See Assigmnent</button>
                 <p>Name: {assignment.name}</p>
                 <p>
                   Start Date:{" "}
@@ -123,6 +152,9 @@ function RepositoryPage() {
                 <p>
                   End Date: {new Date(assignment.endDate).toLocaleDateString()}
                 </p>
+                {canUpdateRepository &&(
+                  <button onClick={() => removeAssignment(assignment)}>Remove Assignment</button>
+                  )}
               </li>
             ))}
           </ul>
