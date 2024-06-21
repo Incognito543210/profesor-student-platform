@@ -203,6 +203,35 @@ function AssignmentPage() {
     window.location.reload();
   }
 
+  const removeFile = (file) =>{
+    if (!token) {
+      return;
+    }
+
+    
+  fetch("https://localhost:7164/API/File/RemoveFile", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(file),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Success:", data);
+      window.location.reload();
+    })
+    .catch((error) => console.error("Error fetching assignments:", error));
+
+    window.location.reload();
+  }
+
   return (
     <div className="repository-page">
       <div className="header-buttons">
@@ -232,9 +261,11 @@ function AssignmentPage() {
                     {files.map((file) => (
                       <li
                         key={file.fileName}
-                        onClick={() => handleDownload(file.fileName)}
                       >
                         <a>{file.fileName}</a>
+                        <button onClick={() => handleDownload(file.fileName)}>Download File</button>
+                        <p/>
+                        <button onClick={() => removeFile(file)}>Remove File</button>
                       </li>
                     ))}
                   </ul>
@@ -284,9 +315,11 @@ function AssignmentPage() {
                     {files.map((file) => (
                       <li
                         key={file.fileName}
-                        onClick={() => handleDownload(file.fileName)}
                       >
                         <a>{file.fileName}</a>
+                        <button onClick={() => handleDownload(file.fileName)}>Download File</button>
+                        <p/>
+                        <button onClick={() => removeFile(file)}>Remove File</button>
                       </li>
                     ))}
                   </ul>
