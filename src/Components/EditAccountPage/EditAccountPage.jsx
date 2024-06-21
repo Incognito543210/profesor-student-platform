@@ -71,7 +71,7 @@ function EditAccountPage() {
     }
 
     formData.userID = localStorage.getItem("user");
-    formData.userID = localStorage.getItem("role");
+    formData.roleIde = localStorage.getItem("role");
     try {
       const response = await fetch(
         "https://localhost:7164/API/Account/updateUser",
