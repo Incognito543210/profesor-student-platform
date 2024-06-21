@@ -67,7 +67,7 @@ function CreateAssignmentPage() {
               : "Assignment created successfully"
           );
           const repositoryID = assignment ? assignment.repositoryID : 0;
-          navigate("/MyAccountPage", {
+          navigate("/myAccountPage", {
             state: { id: repositoryID },
           });
         }
