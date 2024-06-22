@@ -66,7 +66,9 @@ function CreateAssignmentPage() {
               ? "Assignment updated successfully"
               : "Assignment created successfully"
           );
-          const repositoryID = assignment ? assignment.repositoryID : repository.repositoryID;
+          const repositoryID = assignment
+            ? assignment.repositoryID
+            : repository.repositoryID;
           navigate("/repositoryPage", {
             state: { id: repositoryID },
           });
@@ -109,12 +111,16 @@ function CreateAssignmentPage() {
     navigate("/home");
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
     <div className="create-assignment">
       <div className="header-buttons">
         <button onClick={goToMyAccountPage}>My account</button>
         <button onClick={handleLogout}>Logout</button>
         <button onClick={goToHome}>Repositories</button>
+        <button onClick={goBack}>Go Back</button>
       </div>
 
       <h1>{assignment ? "Update Assignment" : "Create Assignment"}</h1>

@@ -14,7 +14,7 @@ function AcceptUserPage() {
   const role = localStorage.getItem("role");
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect(() => {
+  const fetchUsers = () => {
     if (!token) {
       return;
     }
@@ -36,6 +36,10 @@ function AcceptUserPage() {
       .then((response) => response.json())
       .then((data) => setAcceptedUserList(data))
       .catch((error) => console.error("Error fetching accepted users:", error));
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, [token]);
 
   const handleLogout = () => {
@@ -63,6 +67,17 @@ function AcceptUserPage() {
         if (response.ok) {
           console.log("User accepted successfully!");
           setUserList(userList.filter((user) => user.userID !== userID));
+          // Fetch updated accepted users list
+          fetch("https://localhost:7164/API/Account/ConfirmedAccount", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => setAcceptedUserList(data))
+            .catch((error) =>
+              console.error("Error fetching accepted users:", error)
+            );
         } else {
           console.error("Failed to accept user.");
           setErrorMessage("Failed to accept user.");
@@ -95,9 +110,7 @@ function AcceptUserPage() {
       .then((response) => {
         if (response.ok) {
           console.log("User removed successfully!");
-          setAcceptedUserList(
-            acceptedUserList.filter((user) => user.userID !== user.userID)
-          );
+          fetchUsers(); // Refresh both lists after removing a user
         } else {
           console.error("Failed to remove user.");
           setErrorMessage("Failed to remove user.");

@@ -87,7 +87,9 @@ function HomePage() {
         setCheckingEnrollment(false);
         setEnrollmentModalOpen(true);
 
-        if (data.isMember) {
+        const isAdmin = localStorage.getItem("role") === "1";
+
+        if (data.isMember || isAdmin) {
           navigate("/repositoryPage", { state: { id: repoId } });
         }
       })

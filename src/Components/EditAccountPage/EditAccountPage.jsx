@@ -18,7 +18,8 @@ function EditAccountPage() {
     userFirstName: "",
     userLastName: "",
   });
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
@@ -96,12 +97,16 @@ function EditAccountPage() {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
+  };
+
+  const toggleCurrentPasswordVisibility = () => {
+    setCurrentPasswordVisible(!currentPasswordVisible);
+  };
+
+  const toggleNewPasswordVisibility = () => {
+    setNewPasswordVisible(!newPasswordVisible);
   };
 
   const goToMyAccountPage = () => {
@@ -126,7 +131,7 @@ function EditAccountPage() {
           <img src={password_icon} alt="" />
           <p>Current password: </p>
           <input
-            type={passwordVisible ? "text" : "password"}
+            type={currentPasswordVisible ? "text" : "password"}
             name="currentPassword"
             placeholder="Current Password"
             value={formData.currentPassword}
@@ -135,7 +140,7 @@ function EditAccountPage() {
           <img
             src={eye_icon}
             alt="Toggle Password Visibility"
-            onClick={togglePasswordVisibility}
+            onClick={toggleCurrentPasswordVisibility}
             className="toggle-visibility"
           />
           {errors.currentPassword && (
@@ -146,7 +151,7 @@ function EditAccountPage() {
           <img src={password_icon} alt="" />
           <p>New password: </p>
           <input
-            type={passwordVisible ? "text" : "password"}
+            type={newPasswordVisible ? "text" : "password"}
             name="password"
             value={formData.password || ""}
             onChange={handleInputChange}
@@ -154,7 +159,7 @@ function EditAccountPage() {
           <img
             src={eye_icon}
             alt="Toggle Password Visibility"
-            onClick={togglePasswordVisibility}
+            onClick={toggleNewPasswordVisibility}
             className="toggle-visibility"
           />
           {errors.password && <span className="error">{errors.password}</span>}
