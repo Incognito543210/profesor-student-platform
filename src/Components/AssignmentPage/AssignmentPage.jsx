@@ -9,8 +9,9 @@ function AssignmentPage() {
   const token = localStorage.getItem("token");
   const userID = localStorage.getItem("user");
   const roleID = localStorage.getItem("role");
-  const isStudent = roleID == 3 ? false : true;
+  const isStudent = roleID === '3';
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState([]);
   const [mark, setMark] = useState("");
   const [comment, setComment] = useState("");
   const location = useLocation();
@@ -45,8 +46,8 @@ function AssignmentPage() {
       return;
     }
 
-    if (roleID == "3") {
-      fetch(
+    if (isStudent) {
+       const tmp = fetch(
         "https://localhost:7164/API/File/FilesNames/" +
           assignmentID +
           "/" +
@@ -62,11 +63,15 @@ function AssignmentPage() {
         .catch((error) => console.error("Error fetching data:", error));
       console.log(files);
     } else {
-      fetch("https://localhost:7164/API/File/FilesNames/" + assignmentID, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      const tmp = fetch(
+        "https://localhost:7164/API/File/FilesNames/" +
+          assignmentID,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
         .then((response) => response.json())
         .then((data) => setFiles(data))
         .catch((error) => console.error("Error fetching data:", error));
@@ -79,7 +84,7 @@ function AssignmentPage() {
       console.error("Token not found in local storage");
       return;
     }
-    if (roleID != 3) {
+    if (!isStudent) {
       fetch(
         "https://localhost:7164/API/Assigment/getUserAssignments/" +
           assignmentID,
@@ -95,8 +100,8 @@ function AssignmentPage() {
       console.log(users);
     } else {
       fetch(
-        "https://localhost:7164/API/Assigment/getUserAssignments/" +
-          assignmentID +
+        "https://localhost:7164/API/Assigment/getUserAssignment/" +
+          assignmentID + '/' +
           userID,
         {
           headers: {
@@ -105,7 +110,7 @@ function AssignmentPage() {
         }
       )
         .then((response) => response.json())
-        .then((data) => setUsers(data))
+        .then((data) => setUser(data))
         .catch((error) => console.error("Error fetching data:", error));
       console.log(users);
     }
@@ -239,7 +244,7 @@ function AssignmentPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={updateAssigment}>Update Repository</button>
+        <button hidden = {isStudent} onClick={updateAssigment}>Update Assignment</button>
         <button onClick={goToMyAccountPage}>My account</button>
         <button onClick={handleLogout}>Logout</button>
       </div>
@@ -247,20 +252,14 @@ function AssignmentPage() {
         <div>
           <h1>{assignment.name}</h1>
           <h2>{assignment.topic}</h2>
-
-          <input type="file" id="pliczki" multiple />
+          <input type="file" id="pliczki" multiple hidden = {!isStudent}/>
           <br />
           <br />
-          <button onClick={handleUpload}>Upload</button>
-
-          <div hidden={isStudent}>
-            <ul>
-              {users.map((user) => (
-                  <li key={user.userID}
-                  >
+          <button onClick={handleUpload}hidden = {!isStudent}>Upload</button>
+          <div hidden = {!isStudent}>
+            <p/>
+                <label>Ocena: {user.mark}</label>
                   <p/>
-                  <label>Ocena: {user.mark}</label>
-                  <p />
                   <label>Komentarz: {user.comment}</label>
                   <p>Lista plików:</p>
                   <ul>
@@ -274,17 +273,14 @@ function AssignmentPage() {
                         <button onClick={() => removeFile(file)}>Remove File</button>
                       </li>
                     ))}
-                    </ul>
-                    </li>
-                 ))}
-            </ul>
+                  </ul>
           </div>
 
-          <div hidden={!isStudent}>
+          <div hidden = {isStudent}>
             <p>List of students:</p>
             <ul>
               {users.map((user) => (
-                user.userID === userID &&(
+                user.userID != userID &&(
                 <li key={user.userID}>
                   <label>Student ID:{user.userID}</label>
                   <p />
@@ -315,11 +311,12 @@ function AssignmentPage() {
                     type="submit"
                     onClick={() => handleCommentAndMark(user.userID)}
                   >
-                    Zapisz ocenę i komentarz
+                    Save Mark And Comment
                   </button>
                   <p>File list:</p>
                   <ul>
                     {files.map((file) => (
+                     file.userID == user.userID && ( 
                       <li
                         key={file.fileName}
                       >
@@ -328,6 +325,7 @@ function AssignmentPage() {
                         <p/>
                         <button onClick={() => removeFile(file)}>Remove File</button>
                       </li>
+                    )
                     ))}
                   </ul>
                 </li>
