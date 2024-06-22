@@ -66,8 +66,8 @@ function CreateAssignmentPage() {
               ? "Assignment updated successfully"
               : "Assignment created successfully"
           );
-          const repositoryID = assignment ? assignment.repositoryID : 0;
-          navigate("/myAccountPage", {
+          const repositoryID = assignment ? assignment.repositoryID : repository.repositoryID;
+          navigate("/repositoryPage", {
             state: { id: repositoryID },
           });
         }

@@ -125,6 +125,10 @@ function AssignmentPage() {
     navigate("/myAccountPage");
   };
 
+  const updateAssigment = () => {
+    navigate("/createAssignmentPage", {state: {assignment}})
+  }
+
   const handleUpload = () => {
     const fileList = document.getElementById("pliczki").files;
     const formData = new FormData();
@@ -135,7 +139,7 @@ function AssignmentPage() {
     }
 
     try {
-      const response = fetch("https://localhost:7164/API/File/upload/", {
+      fetch("https://localhost:7164/API/File/upload/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -235,6 +239,7 @@ function AssignmentPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
+        <button onClick={updateAssigment}>Update Repository</button>
         <button onClick={goToMyAccountPage}>My account</button>
         <button onClick={handleLogout}>Logout</button>
       </div>

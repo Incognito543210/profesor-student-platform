@@ -111,7 +111,7 @@ function EditAccountPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button onClick={goToHome}>Pepositories</button>
+        <button onClick={goToHome}>Repositories</button>
         <button onClick={handleLogout}>Logout</button>
         <button onClick={goToMyAccountPage}>My account</button>
       </div>
