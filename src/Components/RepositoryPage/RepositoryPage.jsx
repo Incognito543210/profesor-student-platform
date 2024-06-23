@@ -53,13 +53,16 @@ function RepositoryPage() {
       .catch((error) => console.error("Error fetching assignments:", error));
   }, [token, location.state.id]);
 
+  useEffect(() => {
+    if(repository){
+      const createdById = repository.createdById?.toString()
+      if(createdById)
+        localStorage.setItem("createdById",createdById)
+    }
+  })
+
   const handleLogout = () => {
-    localStorage.setItem("token", "");
-    localStorage.removeItem("token");
-    localStorage.setItem("role", "");
-    localStorage.removeItem("role");
-    localStorage.setItem("user", "");
-    localStorage.removeItem("user");
+    localStorage.clear();
     navigate("/");
   };
 
