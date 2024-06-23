@@ -70,7 +70,7 @@ function AcceptStudentsPage() {
         "/" +
         location.state.id,
       {
-        method: "POST", // or PUT, depending on the API
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -80,10 +80,17 @@ function AcceptStudentsPage() {
       .then((response) => {
         if (response.ok) {
           console.log("Student accepted successfully!");
-          // Optionally, refresh the student list or update the UI to reflect the change
+
+          // Find the accepted student in the studentList
+          const acceptedStudent = studentList.find(
+            (student) => student.userID === userID
+          );
+
+          // Update the lists
           setStudentList(
             studentList.filter((student) => student.userID !== userID)
           );
+          setAcceptedStudentList([...acceptedStudentList, acceptedStudent]);
         } else {
           console.error("Failed to accept student.");
           setErrorMessage("Failed to accept student.");
@@ -122,6 +129,7 @@ function AcceptStudentsPage() {
       .then((response) => {
         if (response.ok) {
           console.log("Student removed successfully!");
+
           // Update the accepted student list
           setAcceptedStudentList(
             acceptedStudentList.filter((student) => student.userID !== userID)
@@ -196,4 +204,5 @@ function AcceptStudentsPage() {
     </div>
   );
 }
+
 export default AcceptStudentsPage;
