@@ -277,7 +277,7 @@ function AssignmentPage() {
             <ul>
               {users.map((user) => (
                 user.userID != createdById &&
-                user.userID != userID &&
+                user.roleID !== '2' &&
                 (
                 <li key={user.userID}>
                   <label>Student ID:{user.userID}</label>
