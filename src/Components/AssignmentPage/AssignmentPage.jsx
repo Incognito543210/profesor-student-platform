@@ -9,6 +9,7 @@ function AssignmentPage() {
   const token = localStorage.getItem("token");
   const userID = localStorage.getItem("user");
   const roleID = localStorage.getItem("role");
+  const createdById = localStorage.getItem("createdById")
   const isStudent = roleID === '3';
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState([]);
@@ -117,12 +118,7 @@ function AssignmentPage() {
   }, [token, assignmentID]);
 
   const handleLogout = () => {
-    localStorage.setItem("token", "");
-    localStorage.removeItem("token");
-    localStorage.setItem("role", "");
-    localStorage.removeItem("role");
-    localStorage.setItem("user", "");
-    localStorage.removeItem("user");
+    localStorage.clear();
     navigate("/");
   };
 
@@ -244,7 +240,7 @@ function AssignmentPage() {
   return (
     <div className="repository-page">
       <div className="header-buttons">
-        <button hidden = {isStudent} onClick={updateAssigment}>Update Assignment</button>
+        <button hidden = {createdById != userID} onClick={updateAssigment}>Update Assignment</button>
         <button onClick={goToMyAccountPage}>My account</button>
         <button onClick={handleLogout}>Logout</button>
       </div>
@@ -280,11 +276,13 @@ function AssignmentPage() {
             <p>List of students:</p>
             <ul>
               {users.map((user) => (
-                user.userID != userID &&(
+                user.userID != createdById &&
+                user.userID != userID &&
+                (
                 <li key={user.userID}>
                   <label>Student ID:{user.userID}</label>
                   <p />
-                  <label>
+                  <label hidden = {roleID === '1'}>
                     Rating: {user.mark}
                     <input
                       type="number"
@@ -297,7 +295,7 @@ function AssignmentPage() {
                     />
                   </label>
                   <p />
-                  <label>
+                  <label hidden = {roleID === '1'}>
                     Comment: {user.comment}
                     <p />
                     <input
@@ -310,6 +308,7 @@ function AssignmentPage() {
                   <button
                     type="submit"
                     onClick={() => handleCommentAndMark(user.userID)}
+                    hidden = {roleID === '1'}
                   >
                     Save Mark And Comment
                   </button>

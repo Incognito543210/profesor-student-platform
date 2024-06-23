@@ -42,12 +42,7 @@ function EditAccountPage() {
   }, [location.state]);
 
   const handleLogout = () => {
-    localStorage.setItem("token", "");
-    localStorage.removeItem("token");
-    localStorage.setItem("role", "");
-    localStorage.removeItem("role");
-    localStorage.setItem("user", "");
-    localStorage.removeItem("user");
+    localStorage.clear();
     navigate("/");
   };
 
