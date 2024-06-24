@@ -14,7 +14,6 @@ function AssignmentPage() {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState([]);
   const [mark, setMark] = useState("");
-  const [listOfStudents, setListOfStudents] = useState("")
   const [comment, setComment] = useState("");
   const location = useLocation();
   const assignmentID = location.state.id;
@@ -280,7 +279,7 @@ function AssignmentPage() {
                 user.roleID !== '2' &&
                 (
                 <li key={user.userID}>
-                  <label>Student ID:{user.userID}</label>
+                  <label>Student: {user.userFirstName} {user.userLastName}</label>
                   <p />
                   <label hidden = {roleID === '1'}>
                     Rating: {user.mark}
