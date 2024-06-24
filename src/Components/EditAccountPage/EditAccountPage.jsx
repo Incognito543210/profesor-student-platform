@@ -5,7 +5,7 @@ import email_icon from "../Assets/email.png";
 import password_icon from "../Assets/password.png";
 import user_icon from "../Assets/person.png";
 import eye_icon from "../Assets/eye_icon.png";
-import { validateForm } from "./validation"; // Assuming you have a validation.js file
+import { validateForm } from "./validation";
 
 function EditAccountPage() {
   const [formData, setFormData] = useState({
@@ -67,7 +67,7 @@ function EditAccountPage() {
     }
 
     formData.userID = localStorage.getItem("user");
-    formData.roleIde = localStorage.getItem("role");
+    formData.roleId = localStorage.getItem("role");
     try {
       const response = await fetch(
         "https://localhost:7164/API/Account/updateUser",
@@ -161,7 +161,7 @@ function EditAccountPage() {
         </div>
         <div className="input">
           <img src={password_icon} alt="" />
-          <p>Confirm new passowrd: </p>
+          <p>Confirm new password: </p>
           <input
             type={confirmPasswordVisible ? "text" : "password"}
             name="confirmPassword"

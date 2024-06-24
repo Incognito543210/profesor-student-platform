@@ -54,12 +54,11 @@ function RepositoryPage() {
   }, [token, location.state.id]);
 
   useEffect(() => {
-    if(repository){
-      const createdById = repository.createdById?.toString()
-      if(createdById)
-        localStorage.setItem("createdById",createdById)
+    if (repository) {
+      const createdById = repository.createdById?.toString();
+      if (createdById) localStorage.setItem("createdById", createdById);
     }
-  })
+  });
 
   const handleLogout = () => {
     localStorage.clear();
@@ -154,9 +153,8 @@ function RepositoryPage() {
       </div>
       {repository ? (
         <div>
-          <h1>{repository.name}</h1>
-          <h2>{repository.topic}</h2>
-          <h1>{role}</h1>
+          <h1>Name: {repository.name}</h1>
+          <h2>Topic: {repository.topic}</h2>
           <h3>Assignments:</h3>
           <ul>
             {assignments.map((assignment) => (

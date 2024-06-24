@@ -71,9 +71,13 @@ const LoginSignup = () => {
         console.log("Registration successful");
         setAction("Login");
       } else {
-        const errorMessage = await response.text();
-        setApiError(errorMessage);
-        console.error("Registration failed:", errorMessage);
+        const errorResponse = await response.json();
+        if (errorResponse.errors && errorResponse.errors.Email) {
+          setApiError("That email is taken");
+        } else {
+          setApiError("Registration failed");
+        }
+        console.error("Registration failed:", errorResponse);
       }
     } catch (error) {
       console.error("Error during registration:", error);
