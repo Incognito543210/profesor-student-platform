@@ -158,7 +158,7 @@ function AssignmentPage() {
       "https://localhost:7164/API/File/DownloadFile/" +
         assignmentID +
         "/" +
-        userID +
+        files.userID +
         "/" +
         fileName,
       {
@@ -271,7 +271,6 @@ function AssignmentPage() {
                     ))}
                   </ul>
           </div>
-
           <div hidden = {isStudent}>
             <p>List of students:</p>
             <ul>
@@ -280,7 +279,7 @@ function AssignmentPage() {
                 user.roleID !== '2' &&
                 (
                 <li key={user.userID}>
-                  <label>Student ID:{user.userID}</label>
+                  <label>Student: {user.userFirstName} {user.userLastName}</label>
                   <p />
                   <label hidden = {roleID === '1'}>
                     Rating: {user.mark}
