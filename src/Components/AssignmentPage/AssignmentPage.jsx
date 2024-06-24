@@ -285,13 +285,11 @@ function AssignmentPage() {
                     Rating: {user.mark}
                     <select
                       type="number"
-                      min="2"
-                      max="5"
-                      step="0.5"
                       content={user.mark}
                       value={mark}
                       onChange={(e) => setMark(e.target.value)}
                     >
+                      <option disabled selected> </option>
                       <option>2</option>
                       <option>3</option>
                       <option>3.5</option>
