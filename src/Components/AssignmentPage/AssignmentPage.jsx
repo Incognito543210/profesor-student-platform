@@ -14,6 +14,7 @@ function AssignmentPage() {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState([]);
   const [mark, setMark] = useState("");
+  const [listOfStudents, setListOfStudents] = useState("")
   const [comment, setComment] = useState("");
   const location = useLocation();
   const assignmentID = location.state.id;
@@ -158,7 +159,7 @@ function AssignmentPage() {
       "https://localhost:7164/API/File/DownloadFile/" +
         assignmentID +
         "/" +
-        userID +
+        files.userID +
         "/" +
         fileName,
       {
@@ -271,7 +272,6 @@ function AssignmentPage() {
                     ))}
                   </ul>
           </div>
-
           <div hidden = {isStudent}>
             <p>List of students:</p>
             <ul>
