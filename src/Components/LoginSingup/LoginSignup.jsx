@@ -126,12 +126,12 @@ const LoginSignup = () => {
         } else {
           const errorMessage = await approvalResponse.text();
           console.error("Error checking approval status:", errorMessage);
-          setApiError(errorMessage);
+          setApiError("Incorrect email or password");
         }
       } else {
         const errorMessage = await response.text();
         console.error("Login failed:", errorMessage);
-        setApiError(errorMessage);
+        setApiError("Incorrect email or password");
       }
     } catch (error) {
       console.error("Error during login:", error);
