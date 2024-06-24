@@ -283,7 +283,7 @@ function AssignmentPage() {
                   <p />
                   <label hidden = {roleID === '1'}>
                     Rating: {user.mark}
-                    <input
+                    <select
                       type="number"
                       min="2"
                       max="5"
@@ -291,9 +291,16 @@ function AssignmentPage() {
                       content={user.mark}
                       value={mark}
                       onChange={(e) => setMark(e.target.value)}
-                    />
+                    >
+                      <option>2</option>
+                      <option>3</option>
+                      <option>3.5</option>
+                      <option>4</option>
+                      <option>4.5</option>
+                      <option>5</option>
+                    </select>
                   </label>
-                  <p />
+                  <p/>
                   <label hidden = {roleID === '1'}>
                     Comment: {user.comment}
                     <p />
