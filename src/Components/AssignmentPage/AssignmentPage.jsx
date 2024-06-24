@@ -325,8 +325,6 @@ function AssignmentPage() {
                       >
                         <a>{file.fileName}</a>
                         <button onClick={() => handleDownload(file.fileName)}>Download File</button>
-                        <p/>
-                        <button onClick={() => removeFile(file)}>Remove File</button>
                       </li>
                     )
                     ))}
